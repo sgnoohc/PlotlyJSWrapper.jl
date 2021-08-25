@@ -1,0 +1,7 @@
+name = "PlotlyJSWrapper"
+uuid = "002e815d-0fdb-477c-ad33-97712c4a060e"
+authors = ["Philip Chang <philip@ucsd.edu>"]
+version = "0.1.0"
+
+[deps]
+PlotlyJS = "f0f68f2c-4968-5e81-91da-67840de0976a"
