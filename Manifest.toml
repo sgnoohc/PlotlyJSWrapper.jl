@@ -96,11 +96,11 @@ uuid = "f43a241f-c20a-4ad4-852c-f6b1247861c6"
 
 [[FHist]]
 deps = ["LinearAlgebra", "RecipesBase", "Statistics", "StatsBase", "UnicodePlots"]
-git-tree-sha1 = "5c87b78f8ac55d99c162f468dd0cd2f4e0204ae1"
+git-tree-sha1 = "9c6fb4fb31abee8cf94c4bfb822bc782e55a493f"
 repo-rev = "master"
 repo-url = "https://github.com/Moelf/FHist.jl"
 uuid = "68837c9b-b678-4cd5-9925-8a54edc8f695"
-version = "0.4.0"
+version = "0.5.0"
 
 [[FileWatching]]
 uuid = "7b1f6079-737a-58dc-b8bc-7a2ca5c1b5ee"
@@ -286,9 +286,9 @@ uuid = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
 
 [[PlotlyBase]]
 deps = ["ColorSchemes", "Dates", "DelimitedFiles", "DocStringExtensions", "JSON", "LaTeXStrings", "Logging", "Parameters", "Pkg", "REPL", "Requires", "Statistics", "UUIDs"]
-git-tree-sha1 = "3984b84a295d1bcf0d0f7902f9fb1eeed54f97db"
+git-tree-sha1 = "d67d5f7645d1e377e49496ce2b2f84ccab145f08"
 uuid = "a03496cd-edff-5a9b-9e67-9cda94a718b5"
-version = "0.8.13"
+version = "0.8.14"
 
 [[PlotlyJS]]
 deps = ["Base64", "Blink", "DelimitedFiles", "JSExpr", "JSON", "Kaleido_jll", "Markdown", "Pkg", "PlotlyBase", "REPL", "Reexport", "Requires", "WebIO"]
