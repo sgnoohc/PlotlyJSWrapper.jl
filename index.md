@@ -4,7 +4,7 @@ The wrapper takes [FHist](https://github.com/Moelf/FHist.jl) histograms as input
 
 ## The command
 
-```
+```julia
 plot_stack(
 
            # Background histograms
