@@ -1,44 +1,16 @@
-function make_fhist1d(x, e, bins)
-    # Use FHist to create histogram based on provided data
-    h = Hist1D(Float64; bins=bins)
-    # Decide whether error term is provided or not and create the FHist object
-    if isnothing(e)
-        # Fill the FHist
-        Threads.@threads for i in x
-            push!(h, i)
-        end
-    else
-        # If the content and error terms don't match in length throw an exception
-        if length(x) != length(e)
-            nx = length(x)
-            ne = length(e)
-            error("hist1d:: provided bin content and error content length do not match up! length(x) = $nx != length(e) = $ne")
-        end
-        # Fill the FHist
-        Threads.@threads for i in 1:length(x)
-            push!(h, x[i], e[i])
-        end
-    end
-    return h
-end
+"""
+    build_hist1dtrace(h; witherror=false, datastyle=false)
 
-make_fhist1d(x, bins) = make_fhist1d(x, nothing, bins)
-
-function make_fhist1d(th1::Dict{Symbol, Any})
-    xmin = th1[:fXaxis_fXmin]
-    xmax = th1[:fXaxis_fXmax]
-    nbins = th1[:fXaxis_fNbins]
-    bins = range(xmin, xmax, length=nbins+1)
-    # println(length(bins))
-    # println(length(th1[:fN][2:end-1]))
-    # println(length(th1[:fSumw2][2:end-1]))
-    h = Hist1D(Float64; bins=bins)
-    h.hist.weights .= th1[:fN][2:end-1]
-    h.sumw2 .= th1[:fSumw2][2:end-1]
-    return h
-end
-
-function build_hist1dtrace(h; witherror=false, datastyle=false) # FHist 1d
+Create plotly trace representing `Hist1D` data.
+There are three different variations.
+if datastyle = true, then it returns a single `scatter` trace.
+if witherror = true, then it returns an array of 'scatter' traces.
+The first trace is the central value, while the following two traces
+are the up and down uncertainty bands.
+If all extra arguments are false, it returns a single bar histogram.
+(i.e. background style)
+"""
+function build_hist1dtrace(h; witherror=false, datastyle=false)
     bin_low_edges = copy(binedges(h)) # bin edges
     bin_centers = copy(bincenters(h)) # bin edges
     bin_contents = copy(bincounts(h))
@@ -119,6 +91,11 @@ function build_hist1dtrace(h; witherror=false, datastyle=false) # FHist 1d
     return traces
 end
 
+"""
+    fit_bkg_to_data!(bkgs, total, data_)
+
+Scales bkgs and total to first data integral
+"""
 function fit_bkg_to_data!(bkgs, total, data_)
     # If do fit, scale the background histogram to match the data
     # Check that there is even data to scale it to
@@ -144,6 +121,11 @@ function fit_bkg_to_data!(bkgs, total, data_)
     end
 end
 
+"""
+    get_ymax(total, signals, data_)
+
+Finds the maximum y point including errors
+"""
 function get_ymax(total, signals, data_)
     totalmax = maximum(bincounts(total)+sqrt.(total.sumw2))
     datamax = data_ .|> x->maximum(bincounts(x)+sqrt.(x.sumw2))
@@ -154,6 +136,11 @@ function get_ymax(total, signals, data_)
     ymax = maximum(maxtocheck)
 end
 
+"""
+    get_ymax(total, signals, data_)
+
+Finds the minimum y point including errors
+"""
 function get_ymin(total, signals, data_)
     totalmin = minimum(bincounts(total)-sqrt.(total.sumw2))
     datamin = data_ .|> x->minimum(bincounts(x)-sqrt.(x.sumw2))
@@ -165,10 +152,20 @@ function get_ymin(total, signals, data_)
 end
 
 
+"""
+    get_ymax(total, signals, data_)
+
+Get range of ymin to ymax
+"""
 function get_yrange(total, signals, data_)
     [get_ymin(total, signals, data_), get_ymax(total, signals, data_)]
 end
 
+"""
+    add_ratio_axes_traces!(traces; options)
+
+Add ratio axes traces to `traces`
+"""
 function add_ratio_axes_traces!(traces; options)
     # Dummy traces for ratio panel
     # major ticks
@@ -209,6 +206,11 @@ function add_ratio_axes_traces!(traces; options)
     push!(traces, mainpanel_minorticks_dummy_trace)
 end
 
+"""
+    add_cms_label!(annotations; options)
+
+Add CMS label to `annotations`
+"""
 function add_cms_label!(annotations; options)
     push!(annotations, attr(
                             xref="paper",
@@ -242,6 +244,11 @@ function add_cms_label!(annotations; options)
     end
 end
 
+"""
+    add_lumi_label!(annotations; options)
+
+Add luminosity and energy label to `annotations`
+"""
 function add_lumi_label!(annotations; options)
     lumival = options[:lumivalue]
     comenergy = options[:comenergy]
@@ -261,6 +268,11 @@ function add_lumi_label!(annotations; options)
                            ))
 end
 
+"""
+    add_ratio_traces!(traces, ratio; options)
+
+Add data / MC ratio traces to `traces`
+"""
 function add_ratio_traces!(traces, ratio; options)
     # If no ratio plot then nothing to do just move on
     if length(ratio) == 0
@@ -281,6 +293,11 @@ function add_ratio_traces!(traces, ratio; options)
     end
 end
 
+"""
+    add_background_traces!(traces, bkgs; options)
+
+Add background traces to `traces`
+"""
 function add_background_traces!(traces, bkgs; options)
     # Main data trace
     stack_traces = bkgs .|> build_hist1dtrace
@@ -310,6 +327,11 @@ function add_background_traces!(traces, bkgs; options)
     append!(traces, stack_traces)
 end
 
+"""
+    add_total_traces!(traces, total; options)
+
+Add total background traces to `traces`
+"""
 function add_total_traces!(traces, total; options)
     totaltraces = total |> x->build_hist1dtrace(x, witherror=true)
     for totaltrace in totaltraces
@@ -327,6 +349,11 @@ function add_total_traces!(traces, total; options)
     push!(traces, totallegendtrace)
 end
 
+"""
+    add_data_traces!(traces, data; options)
+
+Add data traces to `traces`
+"""
 function add_data_traces!(traces, data; options)
     data_traces = data .|> x->build_hist1dtrace(x, datastyle=true)
     data_labels = deepcopy(options[:datalabels])
@@ -345,6 +372,11 @@ function add_data_traces!(traces, data; options)
     end
 end
 
+"""
+    colors(i; opacity)
+
+Custom colors
+"""
 function colors(i; opacity)
     i == 11005 && return "rgba(103 , 0 , 31 , $opacity)"
     i == 11004 && return "rgba(178 , 24 , 43 , $opacity)"

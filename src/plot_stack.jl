@@ -1,3 +1,9 @@
+"""
+    plot_stack(; backgrounds, signals=[], data=[], options::Dict{Symbol, Any}=default_options)
+
+Create HEP-style stacked plot with Data/MC ratio in the bottom panel.
+`backgrounds`, `signals`, and `data`, are Arrays of Hist1D.
+"""
 function plot_stack(; backgrounds, signals=[], data=[], options::Dict{Symbol, Any}=default_options)
 
     #__________________________________________________________________________________
