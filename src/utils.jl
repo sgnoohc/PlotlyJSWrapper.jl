@@ -317,8 +317,8 @@ function add_total_traces!(traces, total; options)
         totaltrace.fields[:xaxis] = "x4"
     end
     totaltraces[1].fields[:name] = "total"
-    totaltraces[2].fields[:name] = "total +1σ"
-    totaltraces[3].fields[:name] = "total -1σ"
+    totaltraces[2].fields[:name] = string("total ", options[:totalsystlabel][1])
+    totaltraces[3].fields[:name] = string("total ", options[:totalsystlabel][2])
     append!(traces, totaltraces)
     # dummy total histogram for legend
     totallegendtrace = copy(totaltraces[1])

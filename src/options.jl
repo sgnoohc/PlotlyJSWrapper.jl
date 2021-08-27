@@ -17,4 +17,5 @@ default_options = Dict{Symbol, Any}(
                                     :backgroundlabels => [],
                                     :signallabels => [],
                                     :datalabels => ["Data"],
+                                    :totalsystlabel => ["+1σ", "-1σ"],
                                    )
