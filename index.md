@@ -10,7 +10,7 @@ plot_stack(
            # Background histograms
            backgrounds=[h1, h2, h3, h4, h5, h6],
            
-           # Data histograms (can be multiple and will show up as different color data and multiple ratios)
+           # Data histograms (more than one then plot with different color and multiple ratios)
            data=[data],
 
            # Signal histograms (TODO Not yet implemented!)
