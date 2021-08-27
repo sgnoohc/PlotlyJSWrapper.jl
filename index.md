@@ -1,40 +1,7 @@
 # Wrapper for making HEP analysis plots in Julia
 
 The wrapper takes [FHist](https://github.com/Moelf/FHist.jl) histograms as inputs and uses Plotly as backend.
-
-## Command
-
-```julia
-plot_stack(
-
-           # Background histograms
-           backgrounds=[h1, h2, h3, h4, h5, h6],
-           
-           # Data histograms (more than one then plot with different color and multiple ratios)
-           data=[data],
-
-           # Signal histograms (TODO Not yet implemented!)
-           signals=[signal],
-
-           # Option dictionary
-           options=Dict{Symbol, Any}(
-            :xaxistitle => "Δϕ<sub>jj</sub> [GeV]",
-            :outputname => "plot.pdf",
-            :backgroundlabels => ["tt̄", "Higgs", "Drell-Yan", "tt̄Z", "ZZ", "VBS WW"],
-            :signallabels => ["VVH"],
-           )
-          )
-```
-
-## Options
-
-Full list of options can be found in [```src/options.jl```](https://github.com/sgnoohc/PlotlyJSWrapper.jl/blob/main/src/options.jl)
-
-# Examples
-
-Complete examples can be found in [```examples```](https://github.com/sgnoohc/PlotlyJSWrapper.jl/blob/main/examples)
-
-[```example1.jl```](https://github.com/sgnoohc/PlotlyJSWrapper.jl/blob/main/examples/example1/example1.jl) below will produce the following plot
+Below is an example plot created by the wrapper.
 
 <div style="text-align:center;">
 <!-- <iframe src="plot.html" width="520" height="620" frameBorder="0">
@@ -50,3 +17,39 @@ Complete examples can be found in [```examples```](https://github.com/sgnoohc/Pl
         });
 </script>
 </div>
+
+Below is the code used to create the plot.
+
+```julia
+plot_stack(
+
+     # Background histograms
+     backgrounds=[h1, h2, h3, h4, h5, h6],
+     
+     # Data histograms
+     data=[data], # can be more than one
+
+     # Signal histograms
+     # TODO: Not yet implemented!
+     signals=[signal],
+
+     # Option dictionary
+     options=Dict{Symbol, Any}(
+      :xaxistitle => "Δϕ<sub>jj</sub> [GeV]",
+      :outputname => "plot.pdf",
+      :backgroundlabels => ["tt̄",
+                            "Higgs",
+                            "Drell-Yan",
+                            "tt̄Z",
+                            "ZZ",
+                            "VBS WW"],
+      :signallabels => ["VVH"],
+     )
+)
+```
+
+Full list of options can be found in [```src/options.jl```](https://github.com/sgnoohc/PlotlyJSWrapper.jl/blob/main/src/options.jl)
+
+# More Examples
+
+Complete examples can be found in [```examples```](https://github.com/sgnoohc/PlotlyJSWrapper.jl/blob/main/examples)
