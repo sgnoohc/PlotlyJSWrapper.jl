@@ -1,7 +1,7 @@
 using PlotlyJSWrapper
 using FHist
 
-# Creating examples
+# Creating example histograms
 h1 = Hist1D(randn(3000),-5:0.5:5)
 h2 = Hist1D(randn(1000).+1,-5:0.5:5)
 h3 = Hist1D((randn(1000).+2)./2,-5:0.5:5)
