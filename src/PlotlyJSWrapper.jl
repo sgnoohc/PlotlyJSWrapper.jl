@@ -189,6 +189,8 @@ function build_hist1dtrace(h; witherror=false, datastyle=false) # FHist 1d
                  y=bin_contents,
                  opacity=1.0,
                  marker_color="black",
+                 # marker_line_width=1,
+                 # marker_colorbar_color="black",
                 )
         return s1
     end
@@ -239,6 +241,15 @@ function test()
                   "V/VV/VVV",
                  ]
 
+    groups = [
+              1,
+              2,
+              1,
+              2,
+              1,
+              2,
+             ]
+
     basedir = "/home/users/phchang/public_html/analysis/hwh/VBSHWWBabyLooper--/minilooper/hists//v2.6_SS/v10/Run2/Nominal/"
 
     fhs = process_names .|>
@@ -252,6 +263,12 @@ function test()
         x->x[histname] |>
         make_fhist1d |>
         rebin(9);
+
+    totalfh = sum(fhs)
+
+    sf = integral(datafh) / integral(totalfh)
+
+    fhs = fhs .|> x->x*sf
 
     totalfh = sum(fhs)
 
@@ -271,6 +288,7 @@ function test()
     # Dummy traces for ratio panel
     # major ticks
     ratiopanel_majorticks_dummy_trace = scatter()
+    ratiopanel_majorticks_dummy_trace.fields[:name] = "ratiopanel_majorticks"
     ratiopanel_majorticks_dummy_trace.fields[:yaxis] = "y"
     ratiopanel_majorticks_dummy_trace.fields[:xaxis] = "x"
     ratiopanel_majorticks_dummy_trace.fields[:showlegend] = false
@@ -278,12 +296,14 @@ function test()
 
     # minor ticks
     ratiopanel_minorticks_dummy_trace = scatter()
+    ratiopanel_minorticks_dummy_trace.fields[:name] = "ratiopanel_minorticks"
     ratiopanel_minorticks_dummy_trace.fields[:yaxis] = "y2"
     ratiopanel_minorticks_dummy_trace.fields[:xaxis] = "x2"
     ratiopanel_minorticks_dummy_trace.fields[:showlegend] = false
     push!(traces, ratiopanel_minorticks_dummy_trace)
 
     ratiopanel_unityline_dummy_trace = scatter()
+    ratiopanel_unityline_dummy_trace.fields[:name] = "ratiopanel_unityline"
     ratiopanel_unityline_dummy_trace.fields[:yaxis] = "y3"
     ratiopanel_unityline_dummy_trace.fields[:xaxis] = "x3"
     ratiopanel_unityline_dummy_trace.fields[:showlegend] = false
@@ -292,6 +312,7 @@ function test()
     # Dummy traces for main panel
     # major ticks
     mainpanel_majorticks_dummy_trace = scatter()
+    mainpanel_majorticks_dummy_trace.fields[:name] = "mainpanel_majorticks"
     mainpanel_majorticks_dummy_trace.fields[:yaxis] = "y4"
     mainpanel_majorticks_dummy_trace.fields[:xaxis] = "x4"
     mainpanel_majorticks_dummy_trace.fields[:showlegend] = false
@@ -299,6 +320,7 @@ function test()
 
     # minor ticks
     mainpanel_minorticks_dummy_trace = scatter()
+    mainpanel_minorticks_dummy_trace.fields[:name] = "mainpanel_minorticks"
     mainpanel_minorticks_dummy_trace.fields[:yaxis] = "y5"
     mainpanel_minorticks_dummy_trace.fields[:xaxis] = "x5"
     mainpanel_minorticks_dummy_trace.fields[:showlegend] = false
@@ -308,6 +330,7 @@ function test()
     ratio_trace = build_hist1dtrace(ratiofh, datastyle=true)
     ratio_trace.fields[:yaxis] = "y"
     ratio_trace.fields[:xaxis] = "x"
+    ratio_trace.fields[:name] = "Data/MC"
     ratio_trace.fields[:showlegend] = false
     push!(traces, ratio_trace)
 
@@ -324,25 +347,38 @@ function test()
     for (tr, n) in zip(stack_traces, nice_names)
         tr.fields[:name] = n
     end
+    for (tr, g) in zip(stack_traces, groups)
+        tr.fields[:legendgroup] = g
+    end
 
-    stack_traces = sort(stack_traces, by=x->sum(x.fields[:y]))
+    stack_traces = sort(stack_traces, by=x->sum(x.fields[:y]), rev=false)
 
     append!(traces, stack_traces)
-
-    data_trace = build_hist1dtrace(datafh, datastyle=true)
-    data_trace.fields[:name] = "Data"
-    data_trace.fields[:yaxis] = "y4"
-    data_trace.fields[:xaxis] = "x4"
-
-    push!(traces, data_trace)
 
     totaltraces = totalfh |> x->build_hist1dtrace(x, witherror=true)
     for totaltrace in totaltraces
         totaltrace.fields[:yaxis] = "y4"
         totaltrace.fields[:xaxis] = "x4"
     end
+    totaltraces[1].fields[:name] = "total"
+    totaltraces[2].fields[:name] = "total +1σ"
+    totaltraces[3].fields[:name] = "total -1σ"
 
     append!(traces, totaltraces)
+
+    # dummy total histogram for legend
+    totallegendtrace = copy(totaltraces[1])
+    totallegendtrace.fields[:showlegend] = true
+    totallegendtrace.fields[:legendgroup] = -1
+    push!(traces, totallegendtrace)
+
+    data_trace = build_hist1dtrace(datafh, datastyle=true)
+    data_trace.fields[:name] = "Data"
+    data_trace.fields[:yaxis] = "y4"
+    data_trace.fields[:xaxis] = "x4"
+    data_trace.fields[:legendgroup] = -1
+
+    push!(traces, data_trace)
 
     p = plot(
              traces,
@@ -351,37 +387,83 @@ function test()
                     template="simple_white",
                     autosize=false,
                     width=500,
-                    height=700,
+                    height=600,
 
-                    font=attr( family="arial", size=24,),
+                    font=attr( family="Arial", size=24,),
 
                     margin=attr( l=100, b=100,),
 
-                    legend=attr( orientation="h", font=attr(size=17), yanchor="top", y=0.98, xanchor="center", x=0.5, bgcolor="rgba(255,255,255,0.3)"),
+                    legend=attr( orientation="h", font=attr(size=18, color="black", family="Arial"), yanchor="top", y=0.98, xanchor="center", x=0.5, bgcolor="rgba(255,255,255,0.3)", itemwidth=0, tracegroupgap=0, traceorder="grouped+reversed"),
 
                     bargap=0,
                     barmode="stack",
 
-                    yaxis =attr( color="black" , domain = [0 , 0.3] , linewidth=1 , mirror=true , range = [0 , 2]   , showgrid=false , ticklen=5 , ticks="outside" , nticks=8  , zeroline=false , ) , 
-                    xaxis =attr( color="black" , domain = [0 , 1]   , linewidth=1 , mirror=true , range = [0 , 500] , showgrid=false , ticklen=5 , ticks="outside" , nticks=10 , zeroline=false , ) , 
+                    yaxis =attr( color="black" , domain = [0 , 0.27] , linewidth=1 , mirror=true , range = [0 , 2]   , showgrid=false , ticklen=5 , ticks="outside" , nticks=8  , zeroline=false , title=attr(text="Data/MC", standoff=1), ) , 
+                    xaxis =attr( color="black" , domain = [0 , 1]    , linewidth=1 , mirror=true , range = [0 , 500] , showgrid=false , ticklen=5 , ticks="outside" , nticks=10 , zeroline=false , title=attr(text=string("&nbsp;"^30, "<i>p</i><sub>T,bb</sub> [GeV]"), standoff=1), ) , 
 
-                    yaxis2=attr( color="black" , domain = [0 , 0.3] , linewidth=1 , mirror=true , range = [0 , 2]   , showgrid=false , ticklen=2 , ticks="outside" , nticks=32 , zeroline=false , overlaying="y", showticklabels=false, matches="y") , 
+                    yaxis2=attr( color="black" , domain = [0 , 0.27] , linewidth=1 , mirror=true , range = [0 , 2]   , showgrid=false , ticklen=2 , ticks="outside" , nticks=32 , zeroline=false , overlaying="y", showticklabels=false, matches="y") , 
                     xaxis2=attr( color="black" , domain = [0 , 1]   , linewidth=1 , mirror=true , range = [0 , 500] , showgrid=false , ticklen=2 , ticks="outside" , nticks=40 , zeroline=false , overlaying="x", showticklabels=false, matches="x", ) , 
 
-                    yaxis3=attr( color="black" , domain = [0 , 0.3] , linewidth=1 , mirror=true , range = [0 , 2]   , showgrid=true  , ticklen=2 , ticks="outside" , nticks=4  , zeroline=false , overlaying="y", showticklabels=false, matches="y") , 
+                    yaxis3=attr( color="black" , domain = [0 , 0.27] , linewidth=1 , mirror=true , range = [0 , 2]   , showgrid=true  , ticklen=2 , ticks="outside" , nticks=4  , zeroline=false , overlaying="y", showticklabels=false, matches="y") , 
                     xaxis3=attr( color="black" , domain = [0 , 1]   , linewidth=1 , mirror=true , range = [0 , 500] , showgrid=false , ticklen=2 , ticks="outside" , nticks=40 , zeroline=false , overlaying="x", showticklabels=false, matches="x", ) , 
 
-                    yaxis4=attr( color="black" , domain = [0.35, 1] , linewidth=1 , mirror=true , range = [ymin_range , ymax_range]   , showgrid=false , ticklen=5 , ticks="outside" , nticks=8  , zeroline=true , anchor="x4", ) , 
+                    yaxis4=attr( color="black" , domain = [0.32, 1] , linewidth=1 , mirror=true , range = [ymin_range , ymax_range]   , showgrid=false , ticklen=5 , ticks="outside" , nticks=8  , zeroline=true , anchor="x4", title=attr(text=string("&nbsp;"^25, "Events"), standoff=1), ) , 
                     xaxis4=attr( color="black" , domain = [0 , 1]   , linewidth=1 , mirror=true , range = [0 , 500] , showgrid=false , ticklen=5 , ticks="outside" , nticks=10 , zeroline=true , anchor="y4", showticklabels=false, matches="x", ) , 
 
-                    yaxis5=attr( color="black" , domain = [0.35, 1] , linewidth=1 , mirror=true , range = [0 , 2]   , showgrid=false , ticklen=2 , ticks="outside" , nticks=32 , zeroline=true , anchor="x5", overlaying="y4", showticklabels=false, matches="y4", ) , 
+                    yaxis5=attr( color="black" , domain = [0.32, 1] , linewidth=1 , mirror=true , range = [0 , 2]   , showgrid=false , ticklen=2 , ticks="outside" , nticks=32 , zeroline=true , anchor="x5", overlaying="y4", showticklabels=false, matches="y4", ) , 
                     xaxis5=attr( color="black" , domain = [0 , 1]   , linewidth=1 , mirror=true , range = [0 , 500] , showgrid=false , ticklen=2 , ticks="outside" , nticks=40 , zeroline=true , anchor="y4", overlaying="x4", showticklabels=false, matches="x", ) , 
+
+                    annotations=[
+                                 attr(
+                                      xref="paper",
+                                      yref="paper",
+                                      xanchor="left",
+                                      yanchor="bottom",
+                                      x=0.0,
+                                      y=1.0,
+                                      text="<b>CMS</b>",
+                                      font=attr(
+                                                color="black",
+                                                size=24,
+                                               ),
+                                      showarrow=false,
+                                     ),
+                                 attr(
+                                      xref="paper",
+                                      yref="paper",
+                                      xanchor="left",
+                                      yanchor="bottom",
+                                      x=0.18,
+                                      y=1.0,
+                                      text="<i>Preliminary</i>",
+                                      font=attr(
+                                                color="black",
+                                                size=20,
+                                               ),
+                                      showarrow=false,
+                                     ),
+                                 attr(
+                                      xref="paper",
+                                      yref="paper",
+                                      xanchor="right",
+                                      yanchor="bottom",
+                                      x=1.0,
+                                      y=1.0,
+                                      text="137 fb<sup>-1</sup>(13 TeV)",
+                                      font=attr(
+                                                color="black",
+                                                size=20,
+                                               ),
+                                      showarrow=false,
+                                     ),
+                                ],
 
                    )
             )
-    savefig(p, "test.pdf", width=500, height=600);
     savefig(p, "test.html");
-
+    p.plot.layout[:legend][:font][:family]="Balto"
+    savefig(p, "test.pdf", width=500, height=600);
+    savefig(p, "test.png", width=500, height=600);
 end
 
 end # module
