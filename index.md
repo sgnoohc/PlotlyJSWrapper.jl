@@ -37,6 +37,6 @@ Complete examples can be found in [```examples```](https://github.com/sgnoohc/Pl
 [```example1.jl```](https://github.com/sgnoohc/PlotlyJSWrapper.jl/blob/main/examples/example1/example1.jl) below will produce the following plot
 
 <div style="text-align:center;">
-<iframe src="plot.html" width="500" height="600" frameBorder="0">
+<iframe src="plot.html" width="500" height="700" frameBorder="0">
 </iframe>
 </div>
