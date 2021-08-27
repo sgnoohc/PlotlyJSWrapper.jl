@@ -1,8 +1,8 @@
-## Wrapper for making HEP analysis plots in Julia
+# Wrapper for making HEP analysis plots in Julia
 
 The wrapper takes [FHist](https://github.com/Moelf/FHist.jl) histograms as inputs and uses Plotly as backend.
 
-## The command
+## Command
 
 ```julia
 plot_stack(
@@ -26,15 +26,13 @@ plot_stack(
           )
 ```
 
-## The options
+## Options
 
 Full list of options can be found in [```src/options.jl```](https://github.com/sgnoohc/PlotlyJSWrapper.jl/blob/main/src/options.jl)
 
-## The examples
+# Examples
 
 Complete examples can be found in [```examples```](https://github.com/sgnoohc/PlotlyJSWrapper.jl/blob/main/examples)
-
-### The example1
 
 [```example1.jl```](https://github.com/sgnoohc/PlotlyJSWrapper.jl/blob/main/examples/example1.jl) below will produce the following plot
 
