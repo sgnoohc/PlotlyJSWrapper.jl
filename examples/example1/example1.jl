@@ -8,7 +8,7 @@ h3 = Hist1D((randn(1000).+2)./2,-5:0.5:5) * 0.1
 h4 = Hist1D((randn(2000).-2).*2,-5:0.5:5) * 0.1
 h5 = Hist1D(randn(2000).*5,-5:0.5:5) * 0.1
 h6 = Hist1D(randn(2000).-0.5,-5:0.5:5) * 0.1
-data = Hist1D(randn(900),-5:0.5:5) + Hist1D(randn(200).-3.5,-5:0.5:5) + Hist1D(randn(75).+4,-5:0.5:5)
+data = Hist1D(randn(900),-5:0.5:5) + Hist1D(randn(200).-3.5,-5:0.5:5) + Hist1D(randn(45).+4,-5:0.5:5)
 signal = Hist1D((randn(1000).+10)./3,-5:0.5:5) * 0.1
 
 # Plotting
