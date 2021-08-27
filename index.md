@@ -1,4 +1,4 @@
-# Wrapper for making HEP analysis plots in Julia
+# Wrapper HEP plots in Julia
 
 The wrapper takes [FHist](https://github.com/Moelf/FHist.jl) histograms as inputs and uses Plotly as backend.
 Below is an example plot created by the wrapper.
