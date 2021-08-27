@@ -37,6 +37,16 @@ Complete examples can be found in [```examples```](https://github.com/sgnoohc/Pl
 [```example1.jl```](https://github.com/sgnoohc/PlotlyJSWrapper.jl/blob/main/examples/example1/example1.jl) below will produce the following plot
 
 <div style="text-align:center;">
-<iframe src="plot.html" width="520" height="620" frameBorder="0">
-</iframe>
+<!-- <iframe src="plot.html" width="520" height="620" frameBorder="0">
+</iframe> -->
+<iframe id="github-iframe" src="" width="520" height="620" frameBorder="0"></iframe>
+<script>
+    fetch('https://api.github.com/repos/sgnoohc/PlotlyJSWrapper.jl/contents/examples/example1/plot.html')
+        .then(function(response) {
+            return response.json();
+        }).then(function(data) {
+            var iframe = document.getElementById('github-iframe');
+            iframe.src = 'data:text/html;base64,' + encodeURIComponent(data['content']);
+        });
+</script>
 </div>
