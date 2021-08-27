@@ -1,0 +1,142 @@
+
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>PlotlyJSWrapper for making High Energy Physics analysis plots in Julia | PlotlyJSWrapper.jl</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="PlotlyJSWrapper for making High Energy Physics analysis plots in Julia" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="https://sgnoohc.github.io/PlotlyJSWrapper.jl/" />
+<meta property="og:url" content="https://sgnoohc.github.io/PlotlyJSWrapper.jl/" />
+<meta property="og:site_name" content="PlotlyJSWrapper.jl" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="PlotlyJSWrapper for making High Energy Physics analysis plots in Julia" />
+<script type="application/ld+json">
+{"url":"https://sgnoohc.github.io/PlotlyJSWrapper.jl/","@type":"WebSite","headline":"PlotlyJSWrapper for making High Energy Physics analysis plots in Julia","name":"PlotlyJSWrapper.jl","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <link rel="stylesheet" href="/PlotlyJSWrapper.jl/assets/css/style.css?v=7ea8f61aa74263b12490dc419ca8f59cd7c0a9f6">
+    <script src="/PlotlyJSWrapper.jl/assets/js/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/PlotlyJSWrapper.jl/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header  class="without-description" >
+        <h1>PlotlyJSWrapper.jl</h1>
+        
+        <p class="view"><a href="https://github.com/sgnoohc/PlotlyJSWrapper.jl">View the Project on GitHub <small></small></a></p>
+        <ul>
+        
+          <li><a href="https://github.com/sgnoohc/PlotlyJSWrapper.jl">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+
+      <h2 id="plotlyjswrapper-for-making-high-energy-physics-analysis-plots-in-julia">PlotlyJSWrapper for making High Energy Physics analysis plots in Julia</h2>
+
+<p>The wrapper takes <a href="https://github.com/Moelf/FHist.jl">FHist</a> histograms as inputs and uses Plotly as backend.</p>
+
+<h2 id="the-command">The command</h2>
+
+<div class="language-julia highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plot_stack</span><span class="x">(</span>
+
+           <span class="c"># Background histograms</span>
+           <span class="n">backgrounds</span><span class="o">=</span><span class="x">[</span><span class="n">h1</span><span class="x">,</span> <span class="n">h2</span><span class="x">,</span> <span class="n">h3</span><span class="x">,</span> <span class="n">h4</span><span class="x">,</span> <span class="n">h5</span><span class="x">,</span> <span class="n">h6</span><span class="x">],</span>
+           
+           <span class="c"># Data histograms (can be multiple and will show up as different color data and multiple ratios)</span>
+           <span class="n">data</span><span class="o">=</span><span class="x">[</span><span class="n">data</span><span class="x">],</span>
+
+           <span class="c"># Signal histograms (TODO Not yet implemented!)</span>
+           <span class="n">signals</span><span class="o">=</span><span class="x">[</span><span class="n">signal</span><span class="x">],</span>
+
+           <span class="c"># Option dictionary</span>
+           <span class="n">options</span><span class="o">=</span><span class="kt">Dict</span><span class="x">{</span><span class="kt">Symbol</span><span class="x">,</span> <span class="kt">Any</span><span class="x">}(</span>
+            <span class="o">:</span><span class="n">xaxistitle</span> <span class="o">=&gt;</span> <span class="s">"Δϕ&lt;sub&gt;jj&lt;/sub&gt; [GeV]"</span><span class="x">,</span>
+            <span class="o">:</span><span class="n">outputname</span> <span class="o">=&gt;</span> <span class="s">"plot.pdf"</span><span class="x">,</span>
+            <span class="o">:</span><span class="n">backgroundlabels</span> <span class="o">=&gt;</span> <span class="x">[</span><span class="s">"tt̄"</span><span class="x">,</span> <span class="s">"Higgs"</span><span class="x">,</span> <span class="s">"Drell-Yan"</span><span class="x">,</span> <span class="s">"tt̄Z"</span><span class="x">,</span> <span class="s">"ZZ"</span><span class="x">,</span> <span class="s">"VBS WW"</span><span class="x">],</span>
+            <span class="o">:</span><span class="n">signallabels</span> <span class="o">=&gt;</span> <span class="x">[</span><span class="s">"VVH"</span><span class="x">],</span>
+           <span class="x">)</span>
+          <span class="x">)</span>
+</code></pre></div></div>
+
+<h2 id="the-options">The options</h2>
+
+<p>Full list of options can be found in <a href="https://github.com/sgnoohc/PlotlyJSWrapper.jl/blob/main/src/options.jl"><code class="language-plaintext highlighter-rouge">src/options.jl</code></a></p>
+
+<h2 id="the-examples">The examples</h2>
+
+<p>Complete examples can be found in <a href="https://github.com/sgnoohc/PlotlyJSWrapper.jl/blob/main/examples"><code class="language-plaintext highlighter-rouge">examples</code></a></p>
+
+<h3 id="the-example1">The example1</h3>
+
+<p><a href="https://github.com/sgnoohc/PlotlyJSWrapper.jl/blob/main/examples/example1.jl"><code class="language-plaintext highlighter-rouge">example1.jl</code></a> below will produce the following plot</p>
+
+<!-- <html>
+<head><meta chartset="utf-8" /></head>
+<body> -->
+<div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG"></script>
+    <script type="text/javascript">
+window.PlotlyConfig = {MathJaxConfig: 'local'};
+</script>
+<script src="https://cdn.plot.ly/plotly-2.3.0.min.js"></script>
+
+    &lt;div
+        id=63525aa2-445a-441a-b863-3f7869f0a744
+        class="plotly-graph-div"
+        style="height:600; width:500;"&gt;
+    </div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;script type="text/javascript"&gt;
+    
+    window.PLOTLYENV = window.PLOTLYENV || {}
+    
+    if (document.getElementById('63525aa2-445a-441a-b863-3f7869f0a744')) {
+Plotly.newPlot(
+    '63525aa2-445a-441a-b863-3f7869f0a744',
+    [{"showlegend":false,"xaxis":"x","type":"scatter","name":"Data/MC","yaxis":"y"},{"showlegend":false,"xaxis":"x2","type":"scatter","name":"ratiopanel_minorticks","yaxis":"y2"},{"showlegend":false,"xaxis":"x3","type":"scatter","name":"ratiopanel_unityline","yaxis":"y3"},{"showlegend":false,"xaxis":"x4","type":"scatter","name":"mainpanel_majorticks","yaxis":"y4"},{"showlegend":false,"xaxis":"x5","type":"scatter","name":"mainpanel_minorticks","yaxis":"y5"},{"showlegend":false,"mode":"markers","xaxis":"x","name":"Data/MC","opacity":1,"error_y":{"array":[0.005123862252628339,0.014322761580933945,0.026678357490244255,0.04324394377145324,0.051288438771145646,0.059723798967807946,0.05090107368824145,0.05854583343129015,0.05204704160116921,0.041854416633999796,0.040758353769305596,0.0476509619457949,0.07143441847482611,0.05719951617729718,0.030560009854654773,0.02048963330287532],"width":0},"yaxis":"y","marker":{"color":"black","size":7},"y":[0.007220216606498195,0.050387596899224806,0.1708185053380783,0.4411764705882353,0.748995983935743,1.1734265734265734,1.2347417840375587,1.533097969991174,1.3954619124797407,1.0703557312252965,0.8704081632653061,0.7102803738317757,0.6995708154506438,0.32575757575757575,0.07228915662650602,0.02857142857142857],"type":"scatter","x":[-3.75,-3.25,-2.75,-2.25,-1.75,-1.25,-0.75,-0.25,0.25,0.75,1.25,1.75,2.25,2.75,3.25,3.75]},{"x":[-4.75,-4.25,-3.75,-3.25,-2.75,-2.25,-1.75,-1.25,-0.75,-0.25,0.25,0.75,1.25,1.75,2.25,2.75,3.25,3.75,4.25,4.75],"xaxis":"x4","y":[0,0,0,0,0,0,5,15,46,97,172,183,190,142,83,48,15,4,0,0,0],"type":"bar","name":"Higgs","opacity":1.0,"yaxis":"y4","legendgroup":1,"marker":{"color":"rgba(196 , 139 , 253 , 1)"}},{"x":[-4.75,-4.25,-3.75,-3.25,-2.75,-2.25,-1.75,-1.25,-0.75,-0.25,0.25,0.75,1.25,1.75,2.25,2.75,3.25,3.75,4.25,4.75],"xaxis":"x4","y":[0,0,0,0,0,0,0,0,0,20,128,353,328,150,19,2,0,0,0,0,0],"type":"bar","name":"Drell-Yan","opacity":1.0,"yaxis":"y4","legendgroup":2,"marker":{"color":"rgba(77 , 161 , 60 , 1)"}},{"x":[-4.75,-4.25,-3.75,-3.25,-2.75,-2.25,-1.75,-1.25,-0.75,-0.25,0.25,0.75,1.25,1.75,2.25,2.75,3.25,3.75,4.25,4.75],"xaxis":"x4","y":[195,197,210,185,157,124,104,65,51,30,19,11,3,4,0,1,0,0,0,0,0],"type":"bar","name":"tt̄Z","opacity":1.0,"yaxis":"y4","legendgroup":3,"marker":{"color":"rgba(205 , 240 , 155 , 1)"}},{"x":[-4.75,-4.25,-3.75,-3.25,-2.75,-2.25,-1.75,-1.25,-0.75,-0.25,0.25,0.75,1.25,1.75,2.25,2.75,3.25,3.75,4.25,4.75],"xaxis":"x4","y":[47,56,65,65,75,81,66,73,83,70,67,88,67,66,68,69,66,66,54,54,54],"type":"bar","name":"ZZ","opacity":1.0,"yaxis":"y4","legendgroup":4,"marker":{"color":"rgba(91 , 187 , 241 , 1)"}},{"x":[-4.75,-4.25,-3.75,-3.25,-2.75,-2.25,-1.75,-1.25,-0.75,-0.25,0.25,0.75,1.25,1.75,2.25,2.75,3.25,3.75,4.25,4.75],"xaxis":"x4","y":[0,0,1,7,35,84,157,300,430,365,283,175,105,42,16,0,0,0,0,0,0],"type":"bar","name":"VBS WW","opacity":1.0,"yaxis":"y4","legendgroup":5,"marker":{"color":"rgba(255, 205, 0, 1)"}},{"x":[-4.75,-4.25,-3.75,-3.25,-2.75,-2.25,-1.75,-1.25,-0.75,-0.25,0.25,0.75,1.25,1.75,2.25,2.75,3.25,3.75,4.25,4.75],"xaxis":"x4","y":[0,0,1,1,14,51,166,262,455,551,565,455,287,131,47,12,2,0,0,0,0],"type":"bar","name":"tt̄","opacity":1.0,"yaxis":"y4","legendgroup":6,"marker":{"color":"rgba(240 , 155 , 205 , 1)"}},{"showlegend":false,"mode":"lines","xaxis":"x4","fillcolor":"blue","name":"total","fill":"","opacity":0.7,"yaxis":"y4","marker":{"size":0},"line":{"color":"blue","shape":"hv","width":1},"y":[242,253,277,258,281,340,498,715,1065,1133,1234,1265,980,535,233,132,83,70,54,54,54],"type":"scatter","x":[-5.0,-4.5,-4.0,-3.5,-3.0,-2.5,-2.0,-1.5,-1.0,-0.5,0.0,0.5,1.0,1.5,2.0,2.5,3.0,3.5,4.0,4.5,5.0]},{"showlegend":false,"mode":"lines","line":{"shape":"hv","width":0},"xaxis":"x4","x":[-5.0,-4.5,-4.0,-3.5,-3.0,-2.5,-2.0,-1.5,-1.0,-0.5,0.0,0.5,1.0,1.5,2.0,2.5,3.0,3.5,4.0,4.5,5.0],"y":[257.55634918610406,268.90597372058687,293.64331697709326,274.062378404209,297.7630546142402,358.4390889145858,520.3159136044214,741.7394839142419,1097.6343377441615,1166.6600653594137,1269.1283361405006,1300.5668384875576,1011.304951684997,558.1300670124408,248.26433752247374,143.48912529307606,92.1104335791443,78.36660026534075,61.348469228349536,61.348469228349536,61.348469228349536],"type":"scatter","name":"total +1σ","yaxis":"y4","marker":{"color":"#444"}},{"showlegend":false,"mode":"lines","xaxis":"x4","fillcolor":"rgba(68, 68, 68, 0.3)","name":"total -1σ","fill":"tonexty","yaxis":"y4","marker":{"color":"#444"},"line":{"shape":"hv","width":0},"y":[226.44365081389594,237.09402627941313,260.35668302290674,241.937621595791,264.2369453857598,321.5609110854142,475.6840863955786,688.2605160857581,1032.3656622558385,1099.3399346405863,1198.8716638594994,1229.4331615124424,948.695048315003,511.86993298755925,217.73566247752626,120.51087470692394,73.8895664208557,61.63339973465924,46.651530771650464,46.651530771650464,46.651530771650464],"type":"scatter","x":[-5.0,-4.5,-4.0,-3.5,-3.0,-2.5,-2.0,-1.5,-1.0,-0.5,0.0,0.5,1.0,1.5,2.0,2.5,3.0,3.5,4.0,4.5,5.0]},{"showlegend":true,"mode":"lines","xaxis":"x4","fillcolor":"blue","name":"total","fill":"","opacity":0.7,"yaxis":"y4","legendgroup":-100,"marker":{"size":0},"line":{"color":"blue","width":1,"shape":"hv"},"y":[242,253,277,258,281,340,498,715,1065,1133,1234,1265,980,535,233,132,83,70,54,54,54],"type":"scatter","x":[-5.0,-4.5,-4.0,-3.5,-3.0,-2.5,-2.0,-1.5,-1.0,-0.5,0.0,0.5,1.0,1.5,2.0,2.5,3.0,3.5,4.0,4.5,5.0]},{"mode":"markers","xaxis":"x4","name":"Data","opacity":1,"error_y":{"array":[1.4142135623730951,3.605551275463989,6.928203230275509,12.24744871391589,19.313207915827967,28.965496715920477,36.26292872893749,41.677331968349414,41.49698784249286,36.796738985948195,29.206163733020468,19.493588689617926,12.767145334803704,6.557438524302,2.449489742783178,1.4142135623730951],"width":0},"yaxis":"y4","legendgroup":-1,"marker":{"color":"black","size":7},"y":[2.0,13.0,48.0,150.0,373.0,839.0,1315.0,1737.0,1722.0,1354.0,853.0,380.0,163.0,43.0,6.0,2.0],"type":"scatter","x":[-3.75,-3.25,-2.75,-2.25,-1.75,-1.25,-0.75,-0.25,0.25,0.75,1.25,1.75,2.25,2.75,3.25,3.75]}],
+    {"xaxis":{"ticklen":5,"ticks":"outside","range":[-5.0,5.0],"domain":[0,1],"nticks":10,"color":"black","showgrid":false,"zeroline":false,"title":{"standoff":1,"text":"&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Δϕ&lt;sub&gt;jj&lt;/sub&gt; [GeV]"},"linewidth":1,"mirror":true},"bargap":0,"template":"simple_white","height":600,"yaxis4":{"ticklen":5,"ticks":"outside","range":[0.0,3201.619197543029],"domain":[0.32,1.0],"nticks":8,"color":"black","showgrid":false,"zeroline":false,"title":{"standoff":1,"text":"&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Events"},"linewidth":1,"mirror":true,"anchor":"x4"},"yaxis":{"ticklen":5,"ticks":"outside","range":[0,2],"domain":[0.0,0.27],"nticks":8,"color":"black","showgrid":false,"zeroline":false,"title":{"standoff":1,"text":"Data/MC"},"linewidth":1,"mirror":true},"yaxis2":{"showticklabels":false,"ticklen":2,"overlaying":"y","ticks":"outside","range":[0,2],"domain":[0.0,0.27],"nticks":32,"color":"black","showgrid":false,"zeroline":false,"linewidth":1,"mirror":true,"matches":"y"},"xaxis3":{"showticklabels":false,"ticklen":2,"overlaying":"x","ticks":"outside","range":[-5.0,5.0],"domain":[0,1],"nticks":40,"color":"black","showgrid":false,"zeroline":false,"linewidth":1,"mirror":true,"matches":"x"},"legend":{"yanchor":"top","xanchor":"center","itemwidth":0,"y":0.98,"font":{"color":"black","family":"Arial","size":18},"bgcolor":"rgba(255,255,255,0.3)","tracegroupgap":0,"orientation":"h","traceorder":"grouped","x":0.5},"barmode":"stack","autosize":false,"yaxis3":{"showticklabels":false,"ticklen":2,"overlaying":"y","ticks":"outside","range":[0,2],"domain":[0.0,0.27],"nticks":4,"color":"black","showgrid":true,"zeroline":false,"linewidth":1,"mirror":true,"matches":"y"},"yaxis5":{"showticklabels":false,"ticklen":2,"overlaying":"y4","ticks":"outside","range":[0,2],"domain":[0.32,1.0],"nticks":32,"color":"black","showgrid":false,"zeroline":false,"linewidth":1,"mirror":true,"matches":"y4","anchor":"x5"},"xaxis4":{"showticklabels":false,"ticklen":5,"ticks":"outside","range":[-5.0,5.0],"domain":[0,1],"nticks":10,"color":"black","showgrid":false,"zeroline":false,"linewidth":1,"mirror":true,"matches":"x","anchor":"y4"},"font":{"family":"Arial","size":24},"annotations":[{"yanchor":"bottom","xanchor":"left","y":1.0,"font":{"color":"black","size":24},"yref":"paper","showarrow":false,"text":"&lt;b&gt;CMS&lt;/b&gt;","xref":"paper","x":0.0},{"yanchor":"bottom","xanchor":"left","y":1.0,"font":{"color":"black","size":20},"yref":"paper","showarrow":false,"text":"&lt;i&gt;Preliminary&lt;/i&gt;","xref":"paper","x":0.18},{"yanchor":"bottom","xanchor":"right","y":1.0,"font":{"color":"black","size":20},"yref":"paper","showarrow":false,"text":"137 fb&lt;sup&gt;-1&lt;/sup&gt;(13 TeV)","xref":"paper","x":1.0}],"xaxis2":{"showticklabels":false,"ticklen":2,"overlaying":"x","ticks":"outside","range":[-5.0,5.0],"domain":[0,1],"nticks":40,"color":"black","showgrid":false,"zeroline":false,"linewidth":1,"mirror":true,"matches":"x"},"margin":{"l":100,"b":100,"r":50,"t":60},"xaxis5":{"showticklabels":false,"ticklen":2,"overlaying":"x4","ticks":"outside","range":[-5.0,5.0],"domain":[0,1],"nticks":40,"color":"black","showgrid":false,"zeroline":false,"linewidth":1,"mirror":true,"matches":"x","anchor":"y4"},"width":500},
+    {"editable":false,"responsive":true,"staticPlot":false,"scrollZoom":true},
+) }
+
+    
+&lt;/script&gt;
+</code></pre></div></div>
+<p>&lt;/div&gt;</p>
+
+<!-- </body>
+</html> -->
+
+
+
+      </section>
+    </div>
+    <footer>
+    
+      <p>Project maintained by <a href="https://github.com/sgnoohc">sgnoohc</a></p>
+    
+      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+    </footer>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+  </body>
+</html>
