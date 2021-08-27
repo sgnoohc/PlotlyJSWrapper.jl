@@ -23,6 +23,8 @@ Below is the code used to create the plot.
 ```julia
 plot_stack(
 
+     # Histograms are FHist.jl's Hist1D type
+
      # Background histograms
      backgrounds=[h1, h2, h3, h4, h5, h6],
      
