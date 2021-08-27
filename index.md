@@ -38,4 +38,4 @@ Complete examples can be found in [```examples```](https://github.com/sgnoohc/Pl
 
 [```example1.jl```](https://github.com/sgnoohc/PlotlyJSWrapper.jl/blob/main/examples/example1.jl) below will produce the following plot
 
-{% include plot.html %}
+{% include_relative plot.html %}
