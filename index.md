@@ -38,4 +38,4 @@ Complete examples can be found in [```examples```](https://github.com/sgnoohc/Pl
 
 [```example1.jl```](https://github.com/sgnoohc/PlotlyJSWrapper.jl/blob/main/examples/example1.jl) below will produce the following plot
 
-<iframe src="plot.html" width="600" height="500">  </iframe>
+<iframe src="plot.html" width="500" height="600" frameBorder="0">  </iframe>
