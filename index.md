@@ -34,7 +34,7 @@ Full list of options can be found in [```src/options.jl```](https://github.com/s
 
 Complete examples can be found in [```examples```](https://github.com/sgnoohc/PlotlyJSWrapper.jl/blob/main/examples)
 
-[```example1.jl```](https://github.com/sgnoohc/PlotlyJSWrapper.jl/blob/main/examples/example1.jl) below will produce the following plot
+[```example1.jl```](https://github.com/sgnoohc/PlotlyJSWrapper.jl/blob/main/examples/example1/example1.jl) below will produce the following plot
 
 <div style="text-align:center;">
 <iframe src="plot.html" width="500" height="600" frameBorder="0">
