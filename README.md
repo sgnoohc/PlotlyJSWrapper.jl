@@ -1,6 +1,6 @@
 # PlotlyJSWrapper.jl
 
-A wrapper of ```PlotlyJS``` to plot HEP-style plots quickly with ```FHist``` as inputs
+A wrapper of [PlotlyJS](https://github.com/JuliaPlots/PlotlyJS.jl) to plot HEP-style plots quickly with [FHist](https://github.com/Moelf/FHist.jl) as inputs
 
 ## Quick Example
 

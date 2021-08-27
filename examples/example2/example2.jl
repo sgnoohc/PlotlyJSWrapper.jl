@@ -23,6 +23,6 @@ plot_stack(
             :backgroundlabels => ["tt̄", "Higgs", "Drell-Yan", "tt̄Z", "ZZ", "VBS WW"],
             :datalabels => ["Data", "Different Data"],
             :signallabels => ["VVH"],
-            :ratiorange => [0., 3.],
+            :ratiorange => [0.0, 3.0],
            )
           )

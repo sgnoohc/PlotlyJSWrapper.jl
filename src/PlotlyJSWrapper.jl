@@ -104,6 +104,7 @@ function plot_stack(; backgrounds, signals=[], data=[], options::Dict{Symbol, An
 
     # Compute the ratio range
     ratiorange = useroptions[:ratiorange]
+    println(ratiorange)
 
     # Compute the layout
     ratiopanelydomain = [0, 0.27]
