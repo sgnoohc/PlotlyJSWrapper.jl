@@ -46,7 +46,7 @@ Complete examples can be found in [```examples```](https://github.com/sgnoohc/Pl
             return response.json();
         }).then(function(data) {
             var iframe = document.getElementById('github-iframe');
-            iframe.src = 'data:text/html;base64,' + encodeURIComponent(data['content']);
+            iframe.src = 'data:text/html;base64;charset=utf-8,' + encodeURIComponent(data['content']);
         });
 </script>
 </div>
