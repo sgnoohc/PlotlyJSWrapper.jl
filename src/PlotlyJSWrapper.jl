@@ -3,7 +3,7 @@ module PlotlyJSWrapper
 using PlotlyJS
 using FHist
 
-export build_hist1dtrace, make_fhist1d, plot_stack, test
+export plot_stack
 
 include("utils.jl")
 
