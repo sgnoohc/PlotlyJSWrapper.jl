@@ -1,5 +1,7 @@
 # Plotly wrapper for HEP in Julia
 
+[![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://sgnoohc.github.io/PlotlyJSWrapper.jl/dev/)
+
 The wrapper takes [FHist](https://github.com/Moelf/FHist.jl) histograms as inputs and uses Plotly as backend.
 Below is an example <i>interactive</i> plot created by the wrapper.
 
