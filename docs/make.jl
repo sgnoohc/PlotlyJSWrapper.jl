@@ -7,8 +7,8 @@ makedocs(
                                   # assets = ["assets/logo.ico"],
                                  ),
          pages=[
-                "Documentation" => "index.md",
-                "Stacked Plot" => "plotstack.md",
+                "Introduction" => "index.md",
+                "Plotting HEP's Stacked Plot" => "plotstack.md",
                 "APIs" => "api.md",
                ],
          repo="https://github.com/sgnoohc/PlotlyJSWrapper.jl/blob/{commit}{path}#L{line}",

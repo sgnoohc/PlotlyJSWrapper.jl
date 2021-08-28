@@ -1,9 +1,11 @@
-# Plotly wrapper for HEP in Julia
+## PlotlyJS Wrapper for HEP in Julia
 
 [![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://sgnoohc.github.io/PlotlyJSWrapper.jl/dev/)
 
-The wrapper takes [FHist](https://github.com/Moelf/FHist.jl) histograms as inputs and uses Plotly as backend.
+The wrapper takes [FHist](https://github.com/Moelf/FHist.jl) histograms as inputs and uses [PlotlyJS](https://github.com/JuliaPlots/PlotlyJS.jl) as backend.
 Below is an example *interactive* plot created by the wrapper.
+Scroll, click, hover the mouse over the plots to interact.
+Click the home button on the top right corner to reset the view.
 
 ```@raw html
 <div style="text-align:left">
@@ -18,6 +20,8 @@ Below is an example *interactive* plot created by the wrapper.
         });
 </script>
 </div>
+</br>
+</br>
 </br>
 </br>
 </br>
@@ -78,8 +82,8 @@ plot_stack(
 )
 ```
 
-Full list of options can be found in [```src/options.jl```](https://github.com/sgnoohc/PlotlyJSWrapper.jl/blob/main/src/options.jl)
+See [Plotting HEP style Data / MC Stack Plot](@ref) for more information.
 
-# More Examples
+## More Examples
 
 Complete examples can be found in [```examples```](https://github.com/sgnoohc/PlotlyJSWrapper.jl/blob/main/examples)

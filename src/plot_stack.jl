@@ -1,5 +1,5 @@
 """
-    plot_stack(; backgrounds, signals=[], data=[], options::Dict{Symbol, Any}=[`default_options`](@ref))
+    plot_stack(; backgrounds, signals=[], data=[], options::Dict{Symbol, Any}=default_options)
 
 Create HEP-style stacked plot with Data/MC ratio in the bottom panel.  
 

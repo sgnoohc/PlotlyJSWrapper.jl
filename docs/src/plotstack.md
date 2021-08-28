@@ -1,6 +1,6 @@
 # Plotting HEP style Data / MC Stack Plot
 
-## Basic
+## Function Call and Arguments
 
 Once `FHist` based `Hist1D` objects have been created, one can use `PlotlyJSWrapper` to plot the standard data / MC comparison plots in the following way
 
@@ -39,15 +39,9 @@ The `data` also expects a list.
 If more than one `Hist1D` is provided for `data` the ratio panel will contain more than one set of points.
 The first element of the array will be considered the primary.
 
-The `options` is a `Dict{Symbol, Any}' type of object.
-To pass a user specificied options, follow the syntax of the example given above.
-
 ## Options
 
-Full list of available options are documented here.
-
-```@autodocs
-Modules = [PlotlyJSWrapper]
-Pages = ["options.jl"]
-```
-
+The `options` is a `Dict{Symbol, Any}` type of object.
+To pass a user specificied options, follow the syntax of the example given above.
+When not specificed whatever is defined in the the default options will be used.
+The full list of available and default options can be found [`PlotlyJSWrapper.default_options`](@ref).
