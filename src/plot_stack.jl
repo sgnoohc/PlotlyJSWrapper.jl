@@ -49,16 +49,16 @@ function plot_stack(; backgrounds, signals=[], data=[], options::Dict{Symbol, An
     sigs = deepcopy(signals)
     data_ = deepcopy(data)
 
-    # Total background histogram
-    total = sum(bkgs)
-
     #__________________________________________________________________________________
     #
     #
     # Processing FHist's
     #
     #
-    useroptions[:dofit] && fit_bkg_to_data!(bkgs, total, data_)
+    useroptions[:dofit] && fit_bkg_to_data!(bkgs, data_)
+
+    # Total background histogram
+    total = sum(bkgs)
 
     # Compute the ratio histogram
     ratio = data_ ./ total

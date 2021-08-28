@@ -96,10 +96,12 @@ end
 
 Scales bkgs and total to first data integral
 """
-function fit_bkg_to_data!(bkgs, total, data_)
+function fit_bkg_to_data!(bkgs, data_)
     # If do fit, scale the background histogram to match the data
     # Check that there is even data to scale it to
     if length(data_) != 0
+        # Compute the total with current list of bkgs prior to scaling
+        total = sum(bkgs)
         # Compute the total integral
         bkgint = integral(total)
         # If total integral is 0 then throw exception
@@ -113,8 +115,6 @@ function fit_bkg_to_data!(bkgs, total, data_)
         sf = data_int / bkgint
         # Scale the backgrounds
         bkgs .*= sf
-        # Recompute total
-        total = sum(bkgs) # Recompute total
     else
         # If no data, print warning and move on
         @warn "[PlotlyJSWrapper plot_stack()] Asked for :dofit, but there is no data! Skipping..."
