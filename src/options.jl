@@ -31,6 +31,8 @@ Default options of all the togglable options are documented here.
 
     :datacolors => ["black", "red", "blue", "orange", "green", "purple", "gray"]
     :backgroundcolors => [4020, 4023, 4021, 4024, 2001, 6004, ... , (many more)]
+    :signalcolors => repeat([8001, 8002, 8003, 8004],10)
+    :stackedsignalopacity => 0.6 # Set the opacity of stacked signal fill
 
 Color indexs are defined in [src/colors.jl](@ref).
 
