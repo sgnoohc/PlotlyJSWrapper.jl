@@ -22,7 +22,7 @@ plot_stack(
            backgrounds=[h1, h2, h3, h4, h5, h6],
            data=[data],
            signals=[signal], # TODO Not supported yet
-           options=Dict{Symbol, Any}(
+           options=Dict(
             :xaxistitle => "Δϕ<sub>jj</sub> [GeV]",
             :outputname => "plot.pdf",
             :backgroundlabels => ["tt̄", "Higgs", "Drell-Yan", "tt̄Z", "ZZ", "VBS WW"],

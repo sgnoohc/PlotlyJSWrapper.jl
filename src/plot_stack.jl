@@ -14,7 +14,7 @@ plot_stack(
            backgrounds=[h1, h2, h3, h4, h5, h6],
            data=[data],
            signals=[signal], # TODO Not supported yet
-           options=Dict{Symbol, Any}(
+           options=Dict(
             :xaxistitle => "Δϕ<sub>jj</sub> [GeV]",
             :outputname => "plot.pdf",
             :backgroundlabels => ["tt̄", "Higgs", "Drell-Yan", "tt̄Z", "ZZ", "VBS WW"],
@@ -24,7 +24,7 @@ plot_stack(
 ```
 
 """
-function plot_stack(; backgrounds, signals=[], data=[], options::Dict{Symbol, Any}=default_options)
+function plot_stack(; backgrounds, signals=Hist1D[], data=Hist1D[], options::Dict=default_options)
 
     #__________________________________________________________________________________
     #
@@ -33,8 +33,7 @@ function plot_stack(; backgrounds, signals=[], data=[], options::Dict{Symbol, An
     #
     #
     # Take the default options and merge it with given options
-    useroptions = deepcopy(default_options)
-    merge!(useroptions, options)
+    useroptions = merge(default_options, options)
 
     #__________________________________________________________________________________
     #
@@ -86,17 +85,19 @@ function plot_stack(; backgrounds, signals=[], data=[], options::Dict{Symbol, An
     #
     # Compute the ymax and ymin
     yrange = get_yrange(total, sigs, data_)
-    ymin_range = useroptions[:yminclipnegative] && 0.0
+    ymin_range = useroptions[:yminclipnegative] ? 0.0 : -Inf
     ymax_range = yrange[2] * useroptions[:ymaxscale]
-    yrange = [ymin_range, ymax_range]
-    if length(useroptions[:yrange]) > 1
-        yrange = [useroptions[:yrange][1], useroptions[:yrange][2]]
+    yrange = if length(useroptions[:yrange]) > 1
+        [useroptions[:yrange][1], useroptions[:yrange][2]]
+    else
+        [ymin_range, ymax_range]
     end
 
     # Compute the xrange
-    xrange = [binedges(total)[1], binedges(total)[end]]
-    if length(useroptions[:xrange]) > 1
-        xrange = [useroptions[:xrange][1], useroptions[:xrange][2]]
+    xrange = if length(useroptions[:xrange]) > 1
+        [useroptions[:xrange][1], useroptions[:xrange][2]]
+    else
+        [binedges(total)[1], binedges(total)[end]]
     end
 
     # Compute the ratio range
