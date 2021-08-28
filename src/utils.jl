@@ -116,12 +116,12 @@ function fit_bkg_to_data!(bkgs, total, data_)
         # Compute the data / bkg scale factor
         sf = data_int / bkgint
         # Scale the backgrounds
-        bkgs = bkgs .|> x->x*sf
+        bkgs .*= sf
         # Recompute total
         total = sum(bkgs) # Recompute total
     else
         # If no data, print warning and move on
-        println("Warning! [PlotlyJSWrapper plot_stack()] Asked for :dofit, but there is no data! Skipping...")
+        @warn "[PlotlyJSWrapper plot_stack()] Asked for :dofit, but there is no data! Skipping...")
     end
 end
 
@@ -133,13 +133,11 @@ Finds the maximum y point including errors
 ```
 """
 function get_ymax(total, signals, data_)
-    totalmax = maximum(bincounts(total)+sqrt.(total.sumw2))
-    datamax = data_ .|> x->maximum(bincounts(x)+sqrt.(x.sumw2))
-    sigmax = signals .|> x->maximum(bincounts(x)+sqrt.(x.sumw2))
-    maxtocheck = [totalmax]
-    length(datamax) != 0 && append!(maxtocheck, datamax)
-    length(sigmax) != 0 && append!(maxtocheck, sigmax)
-    ymax = maximum(maxtocheck)
+    _max_with_err(x) = maximum(bincounts(x)+sqrt.(x.sumw2); init=0)
+    totalmax = _max_with_err(total)
+    datamax = mapreduce(_max_with_err, max, data_)
+    sigmax = mapreduce(_max_with_err, max, signals)
+    return max(totalmax, datamax, sigmax)
 end
 
 """
