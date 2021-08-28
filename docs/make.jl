@@ -18,4 +18,5 @@ makedocs(
 
 deploydocs(
           repo = "github.com/sgnoohc/PlotlyJSWrapper.jl.git",
+          devbranch = "main",
           )
