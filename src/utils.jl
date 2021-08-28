@@ -129,23 +129,32 @@ Finds the maximum y point including errors
 function get_ymax(total, signals, data_)
     _max_with_err(x) = maximum(bincounts(x)+sqrt.(x.sumw2); init=0)
     totalmax = _max_with_err(total)
-    datamax = mapreduce(_max_with_err, max, data_)
-    sigmax = mapreduce(_max_with_err, max, signals)
-    return max(totalmax, datamax, sigmax)
+    maxtocheck = [totalmax]
+    if length(data_) != 0
+        push!(maxtocheck, mapreduce(_max_with_err, max, data_))
+    end
+    if length(signals) != 0
+        push!(maxtocheck, mapreduce(_max_with_err, max, signals))
+    end
+    return maximum(maxtocheck)
 end
 
 """
-    get_ymax(total, signals, data_)
+    get_ymin(total, signals, data_)
 
 Finds the minimum y point including errors
 """
 function get_ymin(total, signals, data_)
     totalmin = minimum(bincounts(total)-sqrt.(total.sumw2))
-    datamin = data_ .|> x->minimum(bincounts(x)-sqrt.(x.sumw2))
-    sigmin = signals .|> x->minimum(bincounts(x)-sqrt.(x.sumw2))
     mintocheck = [totalmin]
-    length(datamin) != 0 && append!(mintocheck, datamin)
-    length(sigmin) != 0 && append!(mintocheck, sigmin)
+    if length(data_) != 0
+        datamin = data_ .|> x->minimum(bincounts(x)-sqrt.(x.sumw2))
+        append!(mintocheck, datamin)
+    end
+    if length(signals) != 0
+        sigmin = signals .|> x->minimum(bincounts(x)-sqrt.(x.sumw2))
+        append!(mintocheck, sigmin)
+    end
     ymin = minimum(mintocheck)
 end
 
