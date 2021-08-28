@@ -7,7 +7,7 @@ makedocs(
                                   # assets = ["assets/logo.ico"],
                                  ),
          pages=[
-                "Introduction" => "index.md",
+                "Documentation" => "index.md",
                 "APIs" => "api.md",
                ],
          repo="https://github.com/sgnoohc/PlotlyJSWrapper.jl/blob/{commit}{path}#L{line}",

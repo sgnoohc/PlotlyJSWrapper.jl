@@ -1,13 +1,13 @@
 # Plotly wrapper for HEP in Julia
 
+[![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://sgnoohc.github.io/PlotlyJSWrapper.jl/dev/)
+
 The wrapper takes [FHist](https://github.com/Moelf/FHist.jl) histograms as inputs and uses Plotly as backend.
 Below is an example <i>interactive</i> plot created by the wrapper.
 
 ```@raw html
-<div style="text-align:center;">
-<!-- <iframe src="plot.html" width="520" height="620" frameBorder="0">
-</iframe> -->
-<iframe id="github-iframe" src="" width="520" height="620" frameBorder="0"></iframe>
+<div style="text-align:left">
+<iframe id="github-iframe" src="" width="520" height="620" frameBorder="0" style="position: absolute; height: 100%; "></iframe>
 <script>
     fetch('https://api.github.com/repos/sgnoohc/PlotlyJSWrapper.jl/contents/examples/example1/plot.html')
         .then(function(response) {
@@ -18,6 +18,32 @@ Below is an example <i>interactive</i> plot created by the wrapper.
         });
 </script>
 </div>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
 ```
 
 Below is the code used to create the plot.
@@ -57,4 +83,3 @@ Full list of options can be found in [```src/options.jl```](https://github.com/s
 # More Examples
 
 Complete examples can be found in [```examples```](https://github.com/sgnoohc/PlotlyJSWrapper.jl/blob/main/examples)
-

@@ -1,8 +1,28 @@
 """
-    plot_stack(; backgrounds, signals=[], data=[], options::Dict{Symbol, Any}=default_options)
+    plot_stack(; backgrounds, signals=[], data=[], options::Dict{Symbol, Any}=[`default_options`](@ref))
 
-Create HEP-style stacked plot with Data/MC ratio in the bottom panel.
-`backgrounds`, `signals`, and `data`, are Arrays of Hist1D.
+Create HEP-style stacked plot with Data/MC ratio in the bottom panel.  
+
+Input arguments, `backgrounds`, `signals`, and `data`, are Arrays of [`FHist.jl`](https://github.com/Moelf/FHist.jl)'s Hist1D.  
+
+See [`default_options`](@ref) for complete list of options.
+
+Example usage:
+
+```julia
+plot_stack(
+           backgrounds=[h1, h2, h3, h4, h5, h6],
+           data=[data],
+           signals=[signal], # TODO Not supported yet
+           options=Dict{Symbol, Any}(
+            :xaxistitle => "Δϕ<sub>jj</sub> [GeV]",
+            :outputname => "plot.pdf",
+            :backgroundlabels => ["tt̄", "Higgs", "Drell-Yan", "tt̄Z", "ZZ", "VBS WW"],
+            :signallabels => ["VVH"],
+           )
+          )
+```
+
 """
 function plot_stack(; backgrounds, signals=[], data=[], options::Dict{Symbol, Any}=default_options)
 

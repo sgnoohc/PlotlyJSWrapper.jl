@@ -5,8 +5,8 @@ using FHist
 
 export plot_stack
 
-include("utils.jl")
-include("options.jl")
 include("plot_stack.jl")
+include("options.jl")
+include("utils.jl")
 
 end

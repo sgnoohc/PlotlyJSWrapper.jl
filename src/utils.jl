@@ -1,4 +1,5 @@
 """
+```@setup hide
     build_hist1dtrace(h; witherror=false, datastyle=false)
 
 Create plotly trace representing `Hist1D` data.
@@ -9,6 +10,7 @@ The first trace is the central value, while the following two traces
 are the up and down uncertainty bands.
 If all extra arguments are false, it returns a single bar histogram.
 (i.e. background style)
+```
 """
 function build_hist1dtrace(h; witherror=false, datastyle=false)
     bin_low_edges = copy(binedges(h)) # bin edges
@@ -92,9 +94,11 @@ function build_hist1dtrace(h; witherror=false, datastyle=false)
 end
 
 """
+```@setup hide
     fit_bkg_to_data!(bkgs, total, data_)
 
 Scales bkgs and total to first data integral
+```
 """
 function fit_bkg_to_data!(bkgs, total, data_)
     # If do fit, scale the background histogram to match the data
@@ -122,9 +126,11 @@ function fit_bkg_to_data!(bkgs, total, data_)
 end
 
 """
+```@setup hide
     get_ymax(total, signals, data_)
 
 Finds the maximum y point including errors
+```
 """
 function get_ymax(total, signals, data_)
     totalmax = maximum(bincounts(total)+sqrt.(total.sumw2))
@@ -137,9 +143,11 @@ function get_ymax(total, signals, data_)
 end
 
 """
+```@setup hide
     get_ymax(total, signals, data_)
 
 Finds the minimum y point including errors
+```
 """
 function get_ymin(total, signals, data_)
     totalmin = minimum(bincounts(total)-sqrt.(total.sumw2))
@@ -153,18 +161,22 @@ end
 
 
 """
+```@setup hide
     get_ymax(total, signals, data_)
 
 Get range of ymin to ymax
+```
 """
 function get_yrange(total, signals, data_)
     [get_ymin(total, signals, data_), get_ymax(total, signals, data_)]
 end
 
 """
+```@setup hide
     add_ratio_axes_traces!(traces; options)
 
 Add ratio axes traces to `traces`
+```
 """
 function add_ratio_axes_traces!(traces; options)
     # Dummy traces for ratio panel
@@ -207,9 +219,11 @@ function add_ratio_axes_traces!(traces; options)
 end
 
 """
+```@setup hide
     add_cms_label!(annotations; options)
 
 Add CMS label to `annotations`
+```
 """
 function add_cms_label!(annotations; options)
     push!(annotations, attr(
@@ -245,9 +259,11 @@ function add_cms_label!(annotations; options)
 end
 
 """
+```@setup hide
     add_lumi_label!(annotations; options)
 
 Add luminosity and energy label to `annotations`
+```
 """
 function add_lumi_label!(annotations; options)
     lumival = options[:lumivalue]
@@ -269,9 +285,11 @@ function add_lumi_label!(annotations; options)
 end
 
 """
+```@setup hide
     add_ratio_traces!(traces, ratio; options)
 
 Add data / MC ratio traces to `traces`
+```
 """
 function add_ratio_traces!(traces, ratio; options)
     # If no ratio plot then nothing to do just move on
@@ -294,9 +312,11 @@ function add_ratio_traces!(traces, ratio; options)
 end
 
 """
+```@setup hide
     add_background_traces!(traces, bkgs; options)
 
 Add background traces to `traces`
+```
 """
 function add_background_traces!(traces, bkgs; options)
     # Main data trace
@@ -328,9 +348,11 @@ function add_background_traces!(traces, bkgs; options)
 end
 
 """
+```@setup hide
     add_total_traces!(traces, total; options)
 
 Add total background traces to `traces`
+```
 """
 function add_total_traces!(traces, total; options)
     totaltraces = total |> x->build_hist1dtrace(x, witherror=true)
@@ -350,9 +372,11 @@ function add_total_traces!(traces, total; options)
 end
 
 """
+```@setup hide
     add_data_traces!(traces, data; options)
 
 Add data traces to `traces`
+```
 """
 function add_data_traces!(traces, data; options)
     data_traces = data .|> x->build_hist1dtrace(x, datastyle=true)
@@ -373,9 +397,11 @@ function add_data_traces!(traces, data; options)
 end
 
 """
+```@setup hide
     colors(i; opacity)
 
 Custom colors
+```
 """
 function colors(i; opacity)
     i == 11005 && return "rgba(103 , 0 , 31 , $opacity)"
