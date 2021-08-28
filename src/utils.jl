@@ -235,7 +235,7 @@ function add_cms_label!(annotations; options)
                                 text="<i>Preliminary</i>",
                                 font=attr(
                                           color="black",
-                                          size=14,
+                                          size=20,
                                          ),
                                 showarrow=false,
                                ))
