@@ -121,7 +121,7 @@ function fit_bkg_to_data!(bkgs, total, data_)
         total = sum(bkgs) # Recompute total
     else
         # If no data, print warning and move on
-        @warn "[PlotlyJSWrapper plot_stack()] Asked for :dofit, but there is no data! Skipping...")
+        @warn "[PlotlyJSWrapper plot_stack()] Asked for :dofit, but there is no data! Skipping..."
     end
 end
 
