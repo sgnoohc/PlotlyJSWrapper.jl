@@ -25,5 +25,6 @@ plot_stack(
             :backgroundlabels => ["tt̄", "Higgs", "Drell-Yan", "tt̄Z", "ZZ", "VBS WW"],
             :signallabels => ["VVV", "VVH", "VHH", "HHH"],
             :stacksignals => false,
+            :hideratio => false,
            )
           )

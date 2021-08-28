@@ -7,7 +7,7 @@ Default options of all the togglable options are documented here.
 
     :outputname => "plot.pdf", # TODO create output dir if not exist
 
-# Axes title and labeling
+# Axes and labeling
 
     :ratiotitle => "Data/MC"
     :xaxistitle => "variable [unit]"
@@ -50,6 +50,8 @@ Color indexs are defined in [src/colors.jl](@ref).
 # Extra operations
 
     :dofit => false # Scales all background such that integral is same as `data[1]` histogram
+    :stacksignals => false # Stacks signals on top of total background
+    :hideratio => false # Hide the ratio panel below
 
 """
 const default_options = Dict(
@@ -75,4 +77,5 @@ const default_options = Dict(
                             :datalabels => ["Data"],
                             :totalsystlabel => ["+1σ", "-1σ"],
                             :stacksignals => false,
+                            :hideratio => false,
                             )
