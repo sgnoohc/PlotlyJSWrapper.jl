@@ -98,5 +98,10 @@ function colors(i; opacity)
     i == 6006 && return "rgba(110, 150, 59, $opacity)" # UCSD Green Pantone 7490
     i == 6007 && return "rgba(243, 229, 0, $opacity)" # UCSD Bright Yellow Pantone 3945
     i == 6008 && return "rgba(252, 137, 0, $opacity)" # UCSD Orange Pantone 144
+    # Signal colors
+    i == 8001 && return "rgba(255, 0, 0, $opacity)" # Red
+    i == 8002 && return "rgba(0, 0, 255, $opacity)" # Blue
+    i == 8003 && return "rgba(255, 0, 255, $opacity)" # Magenta
+    i == 8004 && return "rgba(255, 165, 0, $opacity)" # Bright Orange
 end
 
