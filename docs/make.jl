@@ -17,5 +17,5 @@ makedocs(
         )
 
 deploydocs(
-          repo = "github.com/sgnoohc/PlotlyJSWrapper.jl",
+          repo = "github.com/sgnoohc/PlotlyJSWrapper.jl.git",
           )
