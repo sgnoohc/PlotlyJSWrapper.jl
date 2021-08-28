@@ -1,5 +1,4 @@
 """
-```@setup hide
     build_hist1dtrace(h; witherror=false, datastyle=false)
 
 Create plotly trace representing `Hist1D` data.
@@ -10,7 +9,6 @@ The first trace is the central value, while the following two traces
 are the up and down uncertainty bands.
 If all extra arguments are false, it returns a single bar histogram.
 (i.e. background style)
-```
 """
 function build_hist1dtrace(h; witherror=false, datastyle=false)
     bin_low_edges = copy(binedges(h)) # bin edges
@@ -94,11 +92,9 @@ function build_hist1dtrace(h; witherror=false, datastyle=false)
 end
 
 """
-```@setup hide
     fit_bkg_to_data!(bkgs, total, data_)
 
 Scales bkgs and total to first data integral
-```
 """
 function fit_bkg_to_data!(bkgs, total, data_)
     # If do fit, scale the background histogram to match the data
@@ -126,11 +122,9 @@ function fit_bkg_to_data!(bkgs, total, data_)
 end
 
 """
-```@setup hide
     get_ymax(total, signals, data_)
 
 Finds the maximum y point including errors
-```
 """
 function get_ymax(total, signals, data_)
     totalmax = maximum(bincounts(total)+sqrt.(total.sumw2))
@@ -143,11 +137,9 @@ function get_ymax(total, signals, data_)
 end
 
 """
-```@setup hide
     get_ymax(total, signals, data_)
 
 Finds the minimum y point including errors
-```
 """
 function get_ymin(total, signals, data_)
     totalmin = minimum(bincounts(total)-sqrt.(total.sumw2))
@@ -161,22 +153,18 @@ end
 
 
 """
-```@setup hide
     get_ymax(total, signals, data_)
 
 Get range of ymin to ymax
-```
 """
 function get_yrange(total, signals, data_)
     [get_ymin(total, signals, data_), get_ymax(total, signals, data_)]
 end
 
 """
-```@setup hide
     add_ratio_axes_traces!(traces; options)
 
 Add ratio axes traces to `traces`
-```
 """
 function add_ratio_axes_traces!(traces; options)
     # Dummy traces for ratio panel
@@ -219,11 +207,9 @@ function add_ratio_axes_traces!(traces; options)
 end
 
 """
-```@setup hide
     add_cms_label!(annotations; options)
 
 Add CMS label to `annotations`
-```
 """
 function add_cms_label!(annotations; options)
     push!(annotations, attr(
@@ -251,7 +237,7 @@ function add_cms_label!(annotations; options)
                                 text="<i>Preliminary</i>",
                                 font=attr(
                                           color="black",
-                                          size=20,
+                                          size=14,
                                          ),
                                 showarrow=false,
                                ))
@@ -259,11 +245,9 @@ function add_cms_label!(annotations; options)
 end
 
 """
-```@setup hide
     add_lumi_label!(annotations; options)
 
 Add luminosity and energy label to `annotations`
-```
 """
 function add_lumi_label!(annotations; options)
     lumival = options[:lumivalue]
@@ -285,11 +269,9 @@ function add_lumi_label!(annotations; options)
 end
 
 """
-```@setup hide
     add_ratio_traces!(traces, ratio; options)
 
 Add data / MC ratio traces to `traces`
-```
 """
 function add_ratio_traces!(traces, ratio; options)
     # If no ratio plot then nothing to do just move on
@@ -312,11 +294,9 @@ function add_ratio_traces!(traces, ratio; options)
 end
 
 """
-```@setup hide
     add_background_traces!(traces, bkgs; options)
 
 Add background traces to `traces`
-```
 """
 function add_background_traces!(traces, bkgs; options)
     # Main data trace
@@ -348,11 +328,9 @@ function add_background_traces!(traces, bkgs; options)
 end
 
 """
-```@setup hide
     add_total_traces!(traces, total; options)
 
 Add total background traces to `traces`
-```
 """
 function add_total_traces!(traces, total; options)
     totaltraces = total |> x->build_hist1dtrace(x, witherror=true)
@@ -372,11 +350,9 @@ function add_total_traces!(traces, total; options)
 end
 
 """
-```@setup hide
     add_data_traces!(traces, data; options)
 
 Add data traces to `traces`
-```
 """
 function add_data_traces!(traces, data; options)
     data_traces = data .|> x->build_hist1dtrace(x, datastyle=true)
@@ -393,5 +369,56 @@ function add_data_traces!(traces, data; options)
         tr.fields[:xaxis] = "x4"
         tr.fields[:legendgroup] = -1 * i
         push!(traces, tr)
+    end
+end
+
+"""
+    add_signal_traces!(traces, signals; options, total)
+
+Add signal traces to `traces`. `total` is passed in case one wants to stack the
+signal on top of total background.
+"""
+function add_signal_traces!(traces, signals; options, total)
+    signals_to_use = deepcopy(signals)
+    if options[:stacksignals]
+        signals_to_use = signals_to_use .|> x->x+total
+    end
+    signals_traces = signals_to_use .|> x->build_hist1dtrace(x, witherror=true)[1]
+    signals_labels = deepcopy(options[:signallabels])
+    if length(signals_labels) < length(signals_traces)
+        for i in 1:(length(signals_traces)-length(signals_labels))
+            push!(signals_labels, "Signal$i")
+        end
+    end
+    for (i, (label, tr)) in enumerate(zip(signals_labels, signals_traces))
+        tr.fields[:name] = label
+        if options[:stacksignals]
+            tr.fields[:line][:color] = colors(options[:signalcolors][i], opacity=1)
+            tr.fields[:yaxis] = "y4"
+            tr.fields[:xaxis] = "x4"
+            tr.fields[:legendgroup] = -1 * i -200
+            tr.fields[:showlegend] = false
+            tr.fields[:opacity] = 1
+            push!(traces, tr)
+            total_trace = build_hist1dtrace(total, witherror=true)[1]
+            total_trace.fields[:name] = label
+            total_trace.fields[:showlegend] = label
+            total_trace.fields[:line][:width]=0
+            total_trace.fields[:fillcolor]=colors(options[:signalcolors][i], opacity=options[:stackedsignalopacity])
+            total_trace.fields[:marker][:color]=colors(options[:signalcolors][i], opacity=1)
+            total_trace.fields[:fill]="tonexty"
+            total_trace.fields[:yaxis]="y4"
+            total_trace.fields[:xaxis]="x4"
+            push!(traces, total_trace)
+        else
+            tr.fields[:line][:color] = colors(options[:signalcolors][i], opacity=1)
+            tr.fields[:line][:width] = 2
+            tr.fields[:yaxis] = "y4"
+            tr.fields[:xaxis] = "x4"
+            tr.fields[:legendgroup] = -1 * i -200
+            tr.fields[:showlegend] = true
+            tr.fields[:opacity] = 1
+            push!(traces, tr)
+        end
     end
 end

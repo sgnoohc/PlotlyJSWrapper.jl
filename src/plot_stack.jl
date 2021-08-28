@@ -74,6 +74,7 @@ function plot_stack(; backgrounds, signals=[], data=[], options::Dict{Symbol, An
     add_ratio_axes_traces!(traces, options=useroptions)
     add_ratio_traces!(traces, ratio, options=useroptions)
     add_background_traces!(traces, bkgs, options=useroptions)
+    add_signal_traces!(traces, signals, options=useroptions, total=total)
     add_total_traces!(traces, total, options=useroptions)
     add_data_traces!(traces, data_, options=useroptions)
 
@@ -111,6 +112,10 @@ function plot_stack(; backgrounds, signals=[], data=[], options::Dict{Symbol, An
     add_cms_label!(annotations, options=useroptions)
     add_lumi_label!(annotations, options=useroptions)
 
+    # Compute the plot size
+    width = 500
+    height = 600
+
     #__________________________________________________________________________________
     #
     #
@@ -123,8 +128,8 @@ function plot_stack(; backgrounds, signals=[], data=[], options::Dict{Symbol, An
 
                     template="simple_white",
                     autosize=false,
-                    width=500,
-                    height=600,
+                    width=width,
+                    height=height,
 
                     font=attr( family="Arial", size=24,),
 
@@ -301,12 +306,7 @@ function plot_stack(; backgrounds, signals=[], data=[], options::Dict{Symbol, An
 
     # Save HTML
     savefig(p, "$outputnamewithoutextension.html");
-
-    # Do some modification for printing pdf
-    p.plot.layout[:legend][:font][:family]="Balto" # For example t\bar{t} the t and \bar{t} gets different font for Arial, when using Balto it agrees
-
-    # Save PDF and PNG
-    savefig(p, "$outputnamewithoutextension.pdf", width=500, height=600);
-    savefig(p, "$outputnamewithoutextension.png", width=500, height=600);
+    savefig(p, "$outputnamewithoutextension.pdf", width=width, height=height);
+    savefig(p, "$outputnamewithoutextension.png", width=width, height=height);
 
 end

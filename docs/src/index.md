@@ -47,40 +47,9 @@ Click the home button on the top right corner to reset the view.
 </br>
 </br>
 </br>
-</br>
 ```
 
-Below is the code used to create the plot.
-
-```julia
-plot_stack(
-
-     # Histograms are FHist.jl's Hist1D type
-
-     # Background histograms
-     backgrounds=[h1, h2, h3, h4, h5, h6],
-     
-     # Data histograms
-     data=[data], # can be more than one
-
-     # Signal histograms
-     # TODO: Not yet implemented!
-     signals=[signal],
-
-     # Option dictionary
-     options=Dict{Symbol, Any}(
-      :xaxistitle => "Δϕ<sub>jj</sub> [GeV]",
-      :outputname => "plot.pdf",
-      :backgroundlabels => ["tt̄",
-                            "Higgs",
-                            "Drell-Yan",
-                            "tt̄Z",
-                            "ZZ",
-                            "VBS WW"],
-      :signallabels => ["VVH"],
-     )
-)
-```
+The above plot was created with this julia script [`example1.jl`](https://github.com/sgnoohc/PlotlyJSWrapper.jl/blob/main/examples/example1/example1.jl).
 
 See [Plotting HEP style Data / MC Stack Plot](@ref) for more information.
 
