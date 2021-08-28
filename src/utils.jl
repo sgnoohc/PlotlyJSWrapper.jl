@@ -187,6 +187,14 @@ function add_ratio_axes_traces!(traces; options)
     ratiopanel_unityline_dummy_trace.fields[:xaxis] = "x3"
     ratiopanel_unityline_dummy_trace.fields[:showlegend] = false
     push!(traces, ratiopanel_unityline_dummy_trace)
+end
+
+"""
+    add_main_axes_traces!(traces; options)
+
+Add main axes traces to `traces`
+"""
+function add_main_axes_traces!(traces; options)
     # Dummy traces for main panel
     # major ticks
     mainpanel_majorticks_dummy_trace = scatter()
@@ -203,7 +211,6 @@ function add_ratio_axes_traces!(traces; options)
     mainpanel_minorticks_dummy_trace.fields[:showlegend] = false
     push!(traces, mainpanel_minorticks_dummy_trace)
 end
-
 """
     add_cms_label!(annotations; options)
 

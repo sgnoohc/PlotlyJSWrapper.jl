@@ -71,8 +71,17 @@ function plot_stack(; backgrounds, signals=[], data=[], options::Dict{Symbol, An
     #
     # Grand list to hold all the traces to plot
     traces = GenericTrace{Dict{Symbol, Any}}[]
-    add_ratio_axes_traces!(traces, options=useroptions)
-    add_ratio_traces!(traces, ratio, options=useroptions)
+
+    # Add the dummy axes traces
+    if !options[:hideratio]
+        add_ratio_axes_traces!(traces, options=useroptions)
+    end
+    add_main_axes_traces!(traces, options=useroptions)
+
+    # Add the content traces
+    if !options[:hideratio]
+        add_ratio_traces!(traces, ratio, options=useroptions)
+    end
     add_background_traces!(traces, bkgs, options=useroptions)
     add_signal_traces!(traces, signals, options=useroptions, total=total)
     add_total_traces!(traces, total, options=useroptions)
@@ -115,6 +124,22 @@ function plot_stack(; backgrounds, signals=[], data=[], options::Dict{Symbol, An
     # Compute the plot size
     width = 500
     height = 600
+
+    # Compute whether to show the xtick marks labels for main panel
+    showmainpanelxtick = false
+
+    # Compute the x-axis label
+    xaxistitle = string("&nbsp;"^30,useroptions[:xaxistitle])
+    mainpanel_xaxistitle = ""
+    
+    # Recompute the heights and domains if it :hideratio is true
+    if options[:hideratio]
+        ratiopanelydomain = [0, 0]
+        mainpanelydomain = [0, 1]
+        height = 460
+        showmainpanelxtick = true
+        mainpanel_xaxistitle = xaxistitle
+    end
 
     #__________________________________________________________________________________
     #
@@ -166,7 +191,7 @@ function plot_stack(; backgrounds, signals=[], data=[], options::Dict{Symbol, An
                                ticks="outside",
                                nticks=10,
                                zeroline=false,
-                               title=attr(text=string("&nbsp;"^30,useroptions[:xaxistitle]),
+                               title=attr(text=xaxistitle,
                                           standoff=1),
                               ),
 
@@ -254,8 +279,10 @@ function plot_stack(; backgrounds, signals=[], data=[], options::Dict{Symbol, An
                                 nticks=10,
                                 zeroline=false,
                                 anchor="y4",
-                                showticklabels=false,
+                                showticklabels=showmainpanelxtick,
                                 matches="x",
+                                title=attr(text=mainpanel_xaxistitle,
+                                           standoff=1),
                                ),
 
                     # Main tick marks
