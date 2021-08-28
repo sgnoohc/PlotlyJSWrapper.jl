@@ -9,45 +9,45 @@ Default options of all the togglable options are documented here.
 
 # Axes title and labeling
 
-    :ratiotitle => "Data/MC",  
-    :xaxistitle => "variable [unit]",  
-    :yaxistitle => "Events",  
+    :ratiotitle => "Data/MC"
+    :xaxistitle => "variable [unit]"
+    :yaxistitle => "Events"
 
 # Axes scale and ranges
 
-    :yrange => [],  
-    :xrange => [],  
-    :ratiorange => [0, 2],  
-    :yminclipnegative => true, # Clip minimum at 0 
-    :ymaxscale => 1.8, # Multiplicative factor to ymax points across all histograms
+    :yrange => []
+    :xrange => []
+    :ratiorange => [0, 2]
+    :yminclipnegative => true, # Clip minimum at 0
+    :ymaxscale => 1.8 # Multiplicative factor to ymax points across all histograms
 
 # Legend labels
 
-    :backgroundlabels => [],  
-    :signallabels => [],  
-    :datalabels => ["Data"],  
+    :backgroundlabels => []
+    :signallabels => []
+    :datalabels => ["Data"]
 
 # Histogram colors
 
-    :datacolors => ["black", "red", "blue", "orange", "green", "purple", "gray"],  
-    :backgroundcolors => [4020, 4023, 4021, 4024, 2001, 6004, ... , (many more)],  
+    :datacolors => ["black", "red", "blue", "orange", "green", "purple", "gray"]
+    :backgroundcolors => [4020, 4023, 4021, 4024, 2001, 6004, ... , (many more)]
 
 Color indexs are defined in [src/colors.jl](@ref).
 
-# Experiment labels
+# LHC Experiment related labels
 
     # Currently only "CMS" label implemented
-    :addpreliminarylabel => true,  
-    :lumivalue => 137,  
-    :comenergy => 13,  
+    :addpreliminarylabel => true
+    :lumivalue => 137
+    :comenergy => 13
 
 # Extra labels settings
 
-    :totalsystlabel => ["+1σ", "-1σ"],  
+    :totalsystlabel => ["+1σ", "-1σ"]
 
-# Extraneous operations
+# Extra operations
 
-    :dofit => false, # Scales all background such that integral is same as `data[1]` histogram
+    :dofit => false # Scales all background such that integral is same as `data[1]` histogram
 
 """
 const default_options = Dict(
