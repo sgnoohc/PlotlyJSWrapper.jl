@@ -3,6 +3,7 @@
 The wrapper takes [FHist](https://github.com/Moelf/FHist.jl) histograms as inputs and uses Plotly as backend.
 Below is an example <i>interactive</i> plot created by the wrapper.
 
+```@raw html
 <div style="text-align:center;">
 <!-- <iframe src="plot.html" width="520" height="620" frameBorder="0">
 </iframe> -->
@@ -17,6 +18,7 @@ Below is an example <i>interactive</i> plot created by the wrapper.
         });
 </script>
 </div>
+```
 
 Below is the code used to create the plot.
 
