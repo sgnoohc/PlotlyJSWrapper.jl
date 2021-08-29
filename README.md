@@ -21,12 +21,10 @@ signal = Hist1D((randn(1000).+10)./3,-5:0.5:5)
 plot_stack(
            backgrounds=[h1, h2, h3, h4, h5, h6],
            data=[data],
-           signals=[signal], # TODO Not supported yet
-           options=Dict(
-            :xaxistitle => "Δϕ<sub>jj</sub> [GeV]",
-            :outputname => "plot.pdf",
-            :backgroundlabels => ["tt̄", "Higgs", "Drell-Yan", "tt̄Z", "ZZ", "VBS WW"],
-            :signallabels => ["VVH"],
-           )
+           signals=[signal],
+           xaxistitle = "Δϕ<sub>jj</sub> [GeV]",
+           outputname = "plot.pdf",
+           backgroundlabels = ["tt̄", "Higgs", "Drell-Yan", "tt̄Z", "ZZ", "VBS WW"],
+           signallabels = ["VVH"],
           )
 ```     

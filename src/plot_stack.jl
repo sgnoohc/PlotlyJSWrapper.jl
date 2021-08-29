@@ -1,5 +1,5 @@
 """
-    plot_stack(; backgrounds, signals=[], data=[], options::Dict{Symbol, Any}=default_options)
+    plot_stack(; backgrounds, signals=[], data=[], options...)
 
 Create HEP-style stacked plot with Data/MC ratio in the bottom panel.  
 
@@ -14,17 +14,15 @@ plot_stack(
            backgrounds=[h1, h2, h3, h4, h5, h6],
            data=[data],
            signals=[signal], # TODO Not supported yet
-           options=Dict(
-            :xaxistitle => "Δϕ<sub>jj</sub> [GeV]",
-            :outputname => "plot.pdf",
-            :backgroundlabels => ["tt̄", "Higgs", "Drell-Yan", "tt̄Z", "ZZ", "VBS WW"],
-            :signallabels => ["VVH"],
-           )
+           xaxistitle = "Δϕ<sub>jj</sub> [GeV]",
+           outputname = "plot.pdf",
+           backgroundlabels = ["tt̄", "Higgs", "Drell-Yan", "tt̄Z", "ZZ", "VBS WW"],
+           signallabels = ["VVH"],
           )
 ```
 
 """
-function plot_stack(; backgrounds, signals=Hist1D[], data=Hist1D[], options::Dict=default_options)
+function plot_stack(; backgrounds, signals=Hist1D[], data=Hist1D[], options...)
 
     #__________________________________________________________________________________
     #
