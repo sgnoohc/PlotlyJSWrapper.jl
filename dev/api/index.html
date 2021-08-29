@@ -7,7 +7,7 @@
            outputname = &quot;plot.pdf&quot;,
            backgroundlabels = [&quot;tt̄&quot;, &quot;Higgs&quot;, &quot;Drell-Yan&quot;, &quot;tt̄Z&quot;, &quot;ZZ&quot;, &quot;VBS WW&quot;],
            signallabels = [&quot;VVH&quot;],
-          )</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/sgnoohc/PlotlyJSWrapper.jl/blob/e987e71827845ce6c95972d2a009c8c9c87fbcfd/src/plot_stack.jl#LL1-L24">source</a></section></article><article class="docstring"><header><a class="docstring-binding" id="PlotlyJSWrapper.default_options" href="#PlotlyJSWrapper.default_options"><code>PlotlyJSWrapper.default_options</code></a> — <span class="docstring-category">Constant</span></header><section><div><pre><code class="language-julia hljs">default_options = Dict{Symbol, Any}</code></pre><p>Default options of all the togglable options are documented here.</p><p><strong>Output file name</strong></p><pre><code class="nohighlight hljs">:outputname =&gt; &quot;plot.pdf&quot;, # or &quot;plot.{pdf,png}&quot; or &quot;&quot;. TODO create output dir if not exist</code></pre><p><strong>Axes and labeling</strong></p><pre><code class="nohighlight hljs">:ratiotitle =&gt; &quot;Data/MC&quot;
+          )</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/sgnoohc/PlotlyJSWrapper.jl/blob/78617d35edc6d49fe5de0c085b21159ca816b12c/src/plot_stack.jl#LL1-L24">source</a></section></article><article class="docstring"><header><a class="docstring-binding" id="PlotlyJSWrapper.default_options" href="#PlotlyJSWrapper.default_options"><code>PlotlyJSWrapper.default_options</code></a> — <span class="docstring-category">Constant</span></header><section><div><pre><code class="language-julia hljs">default_options = Dict{Symbol, Any}</code></pre><p>Default options of all the togglable options are documented here.</p><p><strong>Output file name</strong></p><pre><code class="nohighlight hljs">:outputname =&gt; &quot;plot.pdf&quot;, # or &quot;plot.{pdf,png}&quot; or &quot;&quot;. TODO create output dir if not exist</code></pre><p><strong>Axes and labeling</strong></p><pre><code class="nohighlight hljs">:ratiotitle =&gt; &quot;Data/MC&quot;
 :xaxistitle =&gt; &quot;variable [unit]&quot;
 :yaxistitle =&gt; &quot;Events&quot;</code></pre><p><strong>Axes scale and ranges</strong></p><pre><code class="nohighlight hljs">:yrange =&gt; []
 :xrange =&gt; []
@@ -24,4 +24,34 @@
 :comenergy =&gt; 13</code></pre><p><strong>Extra labels settings</strong></p><pre><code class="nohighlight hljs">:totalsystlabel =&gt; [&quot;+1σ&quot;, &quot;-1σ&quot;]</code></pre><p><strong>Extra operations</strong></p><pre><code class="nohighlight hljs">:dofit =&gt; false # Scales all background such that integral is same as `data[1]` histogram
 :stacksignals =&gt; false # Stacks signals on top of total background
 :showsignalsinratio =&gt; false # Show signals above unity line in ratio panel
-:hideratio =&gt; false # Hide the ratio panel below</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/sgnoohc/PlotlyJSWrapper.jl/blob/e987e71827845ce6c95972d2a009c8c9c87fbcfd/src/options.jl#LL1-L57">source</a></section></article></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../plotstack/">« Plotting HEP&#39;s Stacked Plot</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.5 on <span class="colophon-date" title="Sunday 29 August 2021 06:07">Sunday 29 August 2021</span>. Using Julia version 1.6.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+:hideratio =&gt; false # Hide the ratio panel below</code></pre><p><strong>Significance (or other figure of merit) scans</strong></p><pre><code class="nohighlight hljs"># Define the &quot;figure of merit&quot;
+# Following are available:
+# (&quot;soverb&quot; | &quot;soversqrtb&quot; | &quot;soversqrtsplusb&quot; | &quot;llsignif&quot; | &quot;custom&quot;)
+:fom =&gt; &quot;soversqrtb&quot; # Default figure of merit is S/√B
+
+# if :fom =&gt; &quot;custom&quot; then, a custom anonymous function (lambda) must be provided
+# The lambda must be of x-&gt;something format where `x` is assumed to be a struct of the following
+#   struct BinInfo
+#       s::Float64   # signal yield
+#       se::Float64  # signal yield error
+#       b::Float64   # totalbkg yield
+#       be::Float64  # totalbkg yield error
+#       d::Float64   # data yield
+#       de::Float64  # data yield error (i.e. sqrt(N))
+#       ibin::Int64  # bin index
+#   end
+# Below is an example of how one might provide a custom function
+# e.g. User wants a custom fom defining s/sqrt(s+b+berror^2+(0.15*b)^2) (to mimic 15% systematics)
+#      then a following lambda must be provided:
+#
+#          :customfom =&gt; x -&gt; x.s / sqrt(x.b + x.be^2 + (0.15*x.b)^2)
+#
+# N.B. only the first element of provided `data` histogram array can be used
+#
+# The default value of the option when not being used is set to
+:customfom =&gt; nothing
+
+# Three options: compute fom per bin or scan from left or right
+:showfomperbin =&gt; false # Show figure of merit (fom) per bin
+:showfomfromleft =&gt; false # Show fom cumulatively cut from left
+:showfomfromright =&gt; false # Show fom cumulatively cut from right</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/sgnoohc/PlotlyJSWrapper.jl/blob/78617d35edc6d49fe5de0c085b21159ca816b12c/src/options.jl#LL1-L91">source</a></section></article></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../plotstack/">« Plotting HEP&#39;s Stacked Plot</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.5 on <span class="colophon-date" title="Sunday 29 August 2021 16:50">Sunday 29 August 2021</span>. Using Julia version 1.6.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
