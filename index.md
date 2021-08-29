@@ -70,21 +70,21 @@ plot_stack(
 )
 ```
 
-Full list of options can be found in [```src/options.jl```](https://github.com/sgnoohc/PlotlyJSWrapper.jl/blob/main/src/options.jl)
+Full list of options can be found in [`src/options.jl`](https://github.com/sgnoohc/PlotlyJSWrapper.jl/blob/main/src/options.jl)
 
 Here is another example. The bottom panel can be customized to users preference using any lambda (anonymous function in Julia lingo).
-This particular example can be found in [```examples/example3/example3.jl```](https://github.com/sgnoohc/PlotlyJSWrapper.jl/blob/main/examples/example3/example3.jl)
+This particular example can be found in [`examples/example3/example3.jl`](https://github.com/sgnoohc/PlotlyJSWrapper.jl/blob/main/examples/example3/example3.jl)
 
 <div style="text-align:center;width:100%;height:410px;overflow:hidden">
 <!-- <iframe src="plot.html" width="520" height="620" frameBorder="0">
 </iframe> -->
-<iframe id="github-iframe" src="" width="520" height="620" frameBorder="0" style="-webkit-transform:scale(0.66);-webkit-transform-origin: 0 0;"></iframe>
+<iframe id="github-iframe2" src="" width="520" height="620" frameBorder="0" style="-webkit-transform:scale(0.66);-webkit-transform-origin: 0 0;"></iframe>
 <script>
     fetch('https://api.github.com/repos/sgnoohc/PlotlyJSWrapper.jl/contents/examples/example3/plot.html')
         .then(function(response) {
             return response.json();
         }).then(function(data) {
-            var iframe = document.getElementById('github-iframe');
+            var iframe = document.getElementById('github-iframe2');
             iframe.src = 'data:text/html;base64;charset=utf-8,' + encodeURIComponent(data['content']);
         });
 </script>
@@ -92,4 +92,4 @@ This particular example can be found in [```examples/example3/example3.jl```](ht
 
 # More Examples
 
-Complete examples can be found in [```examples```](https://github.com/sgnoohc/PlotlyJSWrapper.jl/blob/main/examples)
+Complete examples can be found in [`examples`](https://github.com/sgnoohc/PlotlyJSWrapper.jl/blob/main/examples)
