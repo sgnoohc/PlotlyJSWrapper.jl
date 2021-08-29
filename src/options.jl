@@ -54,6 +54,40 @@ Color indexs are defined in [https://github.com/sgnoohc/PlotlyJSWrapper.jl/blob/
     :showsignalsinratio => false # Show signals above unity line in ratio panel
     :hideratio => false # Hide the ratio panel below
 
+# Significance (or other figure of merit) scans
+
+    # Define the "figure of merit"
+    # Following are available:
+    # ("soverb" | "soversqrtb" | "soversqrtsplusb" | "llsignif" | "custom")
+    :fom => "soversqrtb" # Default figure of merit is S/√B
+
+    # if :fom => "custom" then, a custom anonymous function (lambda) must be provided
+    # The lambda must be of x->something format where `x` is assumed to be a struct of the following
+    #   struct BinInfo
+    #       s::Float64   # signal yield
+    #       se::Float64  # signal yield error
+    #       b::Float64   # totalbkg yield
+    #       be::Float64  # totalbkg yield error
+    #       d::Float64   # data yield
+    #       de::Float64  # data yield error (i.e. sqrt(N))
+    #       ibin::Int64  # bin index
+    #   end
+    # Below is an example of how one might provide a custom function
+    # e.g. User wants a custom fom defining s/sqrt(s+b+berror^2+(0.15*b)^2) (to mimic 15% systematics)
+    #      then a following lambda must be provided:
+    #
+    #          :customfom => x -> x.s / sqrt(x.b + x.be^2 + (0.15*x.b)^2)
+    #
+    # N.B. only the first element of provided `data` histogram array can be used
+    #
+    # The default value of the option when not being used is set to
+    :customfom => nothing
+
+    # Three options: compute fom per bin or scan from left or right
+    :showfomperbin => false # Show figure of merit (fom) per bin
+    :showfomfromleft => false # Show fom cumulatively cut from left
+    :showfomfromright => false # Show fom cumulatively cut from right
+
 """
 const default_options = Dict(
                             :outputname => "plot.pdf",
@@ -63,7 +97,7 @@ const default_options = Dict(
                             :yminclipnegative => true,
                             :yrange => [],
                             :xrange => [],
-                            :ratiorange => [0, 2],
+                            :ratiorange => [],
                             :xaxistitle => "variable [unit]",
                             :yaxistitle => "Events",
                             :addpreliminarylabel => true,
@@ -80,4 +114,9 @@ const default_options = Dict(
                             :stacksignals => false,
                             :showsignalsinratio => false,
                             :hideratio => false,
+                            :fom => "soversqrtb", 
+                            :customfom => nothing,
+                            :showfomperbin => false,
+                            :showfomfromleft => false,
+                            :showfomfromright => false,
                             )
