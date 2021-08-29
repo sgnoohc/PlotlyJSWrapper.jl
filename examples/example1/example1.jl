@@ -1,5 +1,7 @@
 using PlotlyJSWrapper
 using FHist
+using Random
+Random.seed!(42)
 
 # Creating example histograms
 h1 = Hist1D(randn(3000),-5:0.5:5) * 0.1
@@ -19,13 +21,11 @@ plot_stack(
            backgrounds=[h1, h2, h3, h4, h5, h6],
            data=[data],
            signals=[signal, signal2, signal3, signal4],
-           options=Dict{Symbol, Any}(
-            :xaxistitle => "Δϕ<sub>jj</sub> [GeV]",
-            :outputname => "plot.pdf",
-            :backgroundlabels => ["tt̄", "Higgs", "Drell-Yan", "tt̄Z", "ZZ", "VBS WW"],
-            :signallabels => ["VVV", "VVH", "VHH", "HHH"],
-            :stacksignals => true,
-            :hideratio => false,
-            :showsignalsinratio => true,
-           )
+           xaxistitle = "Δϕ<sub>jj</sub> [GeV]",
+           outputname = "plot.pdf",
+           backgroundlabels = ["tt̄", "Higgs", "Drell-Yan", "tt̄Z", "ZZ", "VBS WW"],
+           signallabels = ["VVV", "VVH", "VHH", "HHH"],
+           stacksignals = true,
+           hideratio = false,
+           showsignalsinratio = true,
           )
