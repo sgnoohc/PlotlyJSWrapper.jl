@@ -20,7 +20,7 @@ Below is an example <i>interactive</i> plot created by the wrapper.
 </script>
 </div>
 
-Below is the code used to create the plot.
+Below is an example of how it might look
 
 ```julia
 plot_stack(
@@ -29,16 +29,15 @@ plot_stack(
 
      # Background histograms
      backgrounds=[h1, h2, h3, h4, h5, h6],
-     
+
      # Data histograms
-     data=[data], # can be more than one
+     data=[data],
 
      # Signal histograms
-     # TODO: Not yet implemented!
-     signals=[signal],
+     signals=[signal, signal2, signal3, signal4],
 
      # Option dictionary
-     options=Dict{Symbol, Any}(
+     options=Dict(
       :xaxistitle => "Δϕ<sub>jj</sub> [GeV]",
       :outputname => "plot.pdf",
       :backgroundlabels => ["tt̄",
@@ -47,7 +46,13 @@ plot_stack(
                             "tt̄Z",
                             "ZZ",
                             "VBS WW"],
-      :signallabels => ["VVH"],
+      :signallabels => ["VVV",
+                        "VVH",
+                        "VHH",
+                        "HHH"],
+      :stacksignals => true,
+      :hideratio => false,
+      :showsignalsinratio => true,
      )
 )
 ```
