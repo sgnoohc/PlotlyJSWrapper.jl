@@ -5,7 +5,7 @@ Default options of all the togglable options are documented here.
 
 # Output file name
 
-    :outputname => "plot.pdf", # TODO create output dir if not exist
+    :outputname => "plot.pdf", # or "plot.{pdf,png}" or "". TODO create output dir if not exist
 
 # Axes and labeling
 
