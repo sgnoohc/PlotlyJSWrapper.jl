@@ -5,10 +5,10 @@
 The wrapper takes [FHist](https://github.com/Moelf/FHist.jl) histograms as inputs and uses Plotly as backend.
 Below is an example <i>interactive</i> plot created by the wrapper.
 
-<div style="text-align:center;">
+<div style="text-align:center;width:312px;height:372px;overflow:hidden">
 <!-- <iframe src="plot.html" width="520" height="620" frameBorder="0">
 </iframe> -->
-<iframe id="github-iframe" src="" width="520" height="620" frameBorder="0"></iframe>
+<iframe id="github-iframe" src="" width="520" height="620" frameBorder="0" style="-webkit-transform:scale(0.6);-webkit-transform-origin: 0 0;"></iframe>
 <script>
     fetch('https://api.github.com/repos/sgnoohc/PlotlyJSWrapper.jl/contents/examples/example1/plot.html')
         .then(function(response) {
@@ -25,35 +25,47 @@ Below is an example of how it might look
 ```julia
 plot_stack(
 
-     # Histograms are FHist.jl's Hist1D type
+  # Hists are FHist's Hist1D
 
-     # Background histograms
-     backgrounds=[h1, h2, h3, h4, h5, h6],
+  # Background histograms
+  backgrounds=[h1, h2, h3,
+               h4, h5, h6],
 
-     # Data histograms
-     data=[data],
+  # Data histograms
+  data=[data],
 
-     # Signal histograms
-     signals=[signal, signal2, signal3, signal4],
+  # Signal histograms
+  signals=[signal, signal2,
+           signal3, signal4],
 
-     # Option dictionary
-     options=Dict(
-      :xaxistitle => "Δϕ<sub>jj</sub> [GeV]",
-      :outputname => "plot.pdf",
-      :backgroundlabels => ["tt̄",
-                            "Higgs",
-                            "Drell-Yan",
-                            "tt̄Z",
-                            "ZZ",
-                            "VBS WW"],
-      :signallabels => ["VVV",
-                        "VVH",
-                        "VHH",
-                        "HHH"],
-      :stacksignals => true,
-      :hideratio => false,
-      :showsignalsinratio => true,
-     )
+  # Option dictionary
+  options=Dict(
+
+   :xaxistitle =>
+        "Δϕ<sub>jj</sub> [GeV]",
+
+   :backgroundlabels =>
+        ["tt̄",
+         "Higgs",
+         "Drell-Yan",
+         "tt̄Z",
+         "ZZ",
+         "VBS WW"],
+
+   :signallabels =>
+        ["VVV",
+         "VVH",
+         "VHH",
+         "HHH"],
+
+   # Some extra features
+   :stacksignals => true,
+   :hideratio => false,
+   :showsignalsinratio => true,
+
+   # Path to save to
+   :outputname => "plot.pdf",
+  )
 )
 ```
 
