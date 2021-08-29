@@ -5,10 +5,10 @@
 The wrapper takes [FHist](https://github.com/Moelf/FHist.jl) histograms as inputs and uses Plotly as backend.
 Below is an example <i>interactive</i> plot created by the wrapper.
 
-<div style="text-align:center;width:312px;height:372px;overflow:hidden">
+<div style="text-align:center;width:100%;height:372px;overflow:hidden">
 <!-- <iframe src="plot.html" width="520" height="620" frameBorder="0">
 </iframe> -->
-<iframe id="github-iframe" src="" width="520" height="620" frameBorder="0" style="-webkit-transform:scale(0.6);-webkit-transform-origin: 0 0;"></iframe>
+<iframe id="github-iframe" src="" width="520" height="620" frameBorder="0" style="-webkit-transform:scale(0.6);-webkit-transform-origin: top center;"></iframe>
 <script>
     fetch('https://api.github.com/repos/sgnoohc/PlotlyJSWrapper.jl/contents/examples/example1/plot.html')
         .then(function(response) {
