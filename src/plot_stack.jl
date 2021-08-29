@@ -344,7 +344,7 @@ function plot_stack(; backgrounds, signals=Hist1D[], data=Hist1D[], options::Dic
     if !isempty(outputname)
         outputnamenoext = first(rsplit(outputname, "."; limit=2))
         # all possible output formats
-        outputs = ["$outputnamenoext.$ext" for ext in ["html", "pdf", "png"]]
+        outputs = ["$outputnamenoext.$ext" for ext in ["html", "pdf", "png", "svg"]]
         # those matching the specified filename (or pattern)
         for output in outputs[occursin.(Regex(outputname), outputs)]
             savefig(p, output, width=width, height=height);
