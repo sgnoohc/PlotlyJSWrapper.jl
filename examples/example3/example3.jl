@@ -25,7 +25,7 @@ plot_stack(
            outputname = "plot.{pdf,png,html}", # Creates all three outputs
            backgroundlabels = ["tt̄", "Higgs", "Drell-Yan", "tt̄Z", "ZZ", "VBS WW"],
            signallabels = ["VVV", "VVH", "VHH", "HHH"],
-           stacksignals = true,
+           stacksignals = false,
            hideratio = false,
            showfomfromleft = true,
            customfom = x->x.s/sqrt(x.s+x.b+x.be^2),
