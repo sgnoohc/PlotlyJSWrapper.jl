@@ -51,6 +51,7 @@ Color indexs are defined in [src/colors.jl](@ref).
 
     :dofit => false # Scales all background such that integral is same as `data[1]` histogram
     :stacksignals => false # Stacks signals on top of total background
+    :showsignalsinratio => false # Show signals above unity line in ratio panel
     :hideratio => false # Hide the ratio panel below
 
 """
@@ -77,5 +78,6 @@ const default_options = Dict(
                             :datalabels => ["Data"],
                             :totalsystlabel => ["+1σ", "-1σ"],
                             :stacksignals => false,
+                            :showsignalsinratio => false,
                             :hideratio => false,
                             )

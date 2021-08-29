@@ -24,7 +24,8 @@ plot_stack(
             :outputname => "plot.pdf",
             :backgroundlabels => ["tt̄", "Higgs", "Drell-Yan", "tt̄Z", "ZZ", "VBS WW"],
             :signallabels => ["VVV", "VVH", "VHH", "HHH"],
-            :stacksignals => false,
+            :stacksignals => true,
             :hideratio => false,
+            :showsignalsinratio => true,
            )
           )

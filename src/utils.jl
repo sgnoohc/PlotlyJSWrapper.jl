@@ -92,6 +92,19 @@ function build_hist1dtrace(h; witherror=false, datastyle=false)
 end
 
 """
+    get_totalunity(total)
+
+Divide the `total` by itself and return a "unity" histogram to be used for
+ratio panel for bkg error shade in the ratio panel
+"""
+function get_totalunity(total)
+    output = total / total
+    output.hist.weights .= output.hist.weights .|> x->(isnan(x) ? 0 : x)
+    output.sumw2 .= output.sumw2 .|> x->(isnan(x) ? 0 : x)
+    return output
+end
+
+"""
     fit_bkg_to_data!(bkgs, total, data_)
 
 Scales bkgs and total to first data integral
@@ -268,6 +281,54 @@ function add_ratio_traces!(traces, ratio; options)
         tr.fields[:name] = "Data/MC"
         tr.fields[:marker][:color] = options[:datacolors][i]
         tr.fields[:showlegend] = false
+        push!(traces, tr)
+    end
+end
+
+"""
+    add_ratio_totalerror_traces!(traces, total; options)
+
+Add total ratio error line to `traces`
+"""
+function add_ratio_totalerror_traces!(traces, total; options)
+
+    # First massage the total histogram into unity with errors being fractional
+    totalunity = get_totalunity(total)
+
+    totaltraces = totalunity |> x->build_hist1dtrace(x, witherror=true)
+    for totaltrace in totaltraces
+        totaltrace.fields[:yaxis] = "y"
+        totaltrace.fields[:xaxis] = "x"
+    end
+    totaltraces[1].fields[:name] = "total"
+    totaltraces[2].fields[:name] = string("total ", options[:totalsystlabel][1])
+    totaltraces[3].fields[:name] = string("total ", options[:totalsystlabel][2])
+    append!(traces, totaltraces)
+end
+
+"""
+    add_ratio_signal_traces!(traces, signals, total; options)
+
+Add signals traces above ratio panel's unity line to `traces`
+"""
+function add_ratio_signal_traces!(traces, signals, total; options)
+    signalsratio = (signals .+ total) ./ total
+    signals_to_use = deepcopy(signalsratio)
+    signals_traces = signals_to_use .|> x->build_hist1dtrace(x, witherror=true)[1]
+    signals_labels = deepcopy(options[:signallabels])
+    if length(signals_labels) < length(signals_traces)
+        for i in 1:(length(signals_traces)-length(signals_labels))
+            push!(signals_labels, "Signal$i")
+        end
+    end
+    for (i, (label, tr)) in enumerate(zip(signals_labels, signals_traces))
+        tr.fields[:name] = label
+        tr.fields[:line][:color] = colors(options[:signalcolors][i], opacity=1)
+        tr.fields[:line][:width] = 2
+        tr.fields[:yaxis] = "y"
+        tr.fields[:xaxis] = "x"
+        tr.fields[:showlegend] = false
+        tr.fields[:opacity] = 1
         push!(traces, tr)
     end
 end
