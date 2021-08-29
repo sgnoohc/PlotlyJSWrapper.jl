@@ -122,50 +122,15 @@ function fit_bkg_to_data!(bkgs, data_)
 end
 
 """
-    get_ymax(total, signals, data_)
-
-Finds the maximum y point including errors
-"""
-function get_ymax(total, signals, data_)
-    _max_with_err(x) = maximum(bincounts(x)+sqrt.(x.sumw2); init=0)
-    totalmax = _max_with_err(total)
-    maxtocheck = [totalmax]
-    if length(data_) != 0
-        push!(maxtocheck, mapreduce(_max_with_err, max, data_))
-    end
-    if length(signals) != 0
-        push!(maxtocheck, mapreduce(_max_with_err, max, signals))
-    end
-    return maximum(maxtocheck)
-end
-
-"""
-    get_ymin(total, signals, data_)
-
-Finds the minimum y point including errors
-"""
-function get_ymin(total, signals, data_)
-    totalmin = minimum(bincounts(total)-sqrt.(total.sumw2))
-    mintocheck = [totalmin]
-    if length(data_) != 0
-        datamin = data_ .|> x->minimum(bincounts(x)-sqrt.(x.sumw2))
-        append!(mintocheck, datamin)
-    end
-    if length(signals) != 0
-        sigmin = signals .|> x->minimum(bincounts(x)-sqrt.(x.sumw2))
-        append!(mintocheck, sigmin)
-    end
-    ymin = minimum(mintocheck)
-end
-
-
-"""
-    get_ymax(total, signals, data_)
+    get_yrange(total, signals, data_)
 
 Get range of ymin to ymax
 """
 function get_yrange(total, signals, data_)
-    [get_ymin(total, signals, data_), get_ymax(total, signals, data_)]
+    hists = [total, signals..., data_...]
+    ymin = [minimum(bincounts(h)-sqrt.(h.sumw2)) for h in hists] |> minimum
+    ymax = [maximum(bincounts(h)+sqrt.(h.sumw2)) for h in hists] |> maximum
+    (ymin, ymax)
 end
 
 """
