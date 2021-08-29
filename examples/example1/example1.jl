@@ -25,10 +25,7 @@ plot_stack(
            outputname = "plot.{pdf,png,html}", # Creates all three outputs
            backgroundlabels = ["tt̄", "Higgs", "Drell-Yan", "tt̄Z", "ZZ", "VBS WW"],
            signallabels = ["VVV", "VVH", "VHH", "HHH"],
-           stacksignals = false,
+           stacksignals = true,
            hideratio = false,
-           showsignalsinratio = false,
-           showfomfromright = true,
-           fom = "custom",
-           customfom = x->x.s*(-4+x.ibin*(8/20)),
+           showsignalsinratio = true,
           );
