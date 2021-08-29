@@ -75,7 +75,7 @@ Here is another example made from [`examples/example3/example3.jl`](https://gith
 The bottom panel can be customized to users preference using any lambda (anonymous function in Julia lingo).
 The signals can be stacked or unstacked.
 There are many more features available.
-Full list of options can be found in [`src/options.jl`](https://github.com/sgnoohc/PlotlyJSWrapper.jl/blob/main/src/options.jl)
+Full list of options can be found in [`options`](https://sgnoohc.github.io/PlotlyJSWrapper.jl/dev/api/#PlotlyJSWrapper.default_options)
 
 <div style="text-align:center;width:100%;height:410px;overflow:hidden">
 <!-- <iframe src="plot.html" width="520" height="620" frameBorder="0">
