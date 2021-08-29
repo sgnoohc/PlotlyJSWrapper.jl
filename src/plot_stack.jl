@@ -198,6 +198,7 @@ function plot_stack(; backgrounds, signals=Hist1D[], data=Hist1D[], options...)
                                 zeroline=false,
                                 title=attr(
                                            text=useroptions[:ratiotitle],
+                                           font=attr(size=useroptions[:ratiotitlesize],),
                                            standoff=1
                                           ),
                                ), 

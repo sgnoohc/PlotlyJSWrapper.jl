@@ -13,6 +13,8 @@ Default options of all the togglable options are documented here.
     :xaxistitle => "variable [unit]"
     :yaxistitle => "Events"
 
+    :ratiotitlesize => 29
+
 # Axes scale and ranges
 
     :yrange => []
@@ -93,6 +95,7 @@ const default_options = Dict(
                             :outputname => "plot.pdf",
                             :dofit => false,
                             :ratiotitle => "Data/MC",
+                            :ratiotitlesize => 29,
                             :ymaxscale => 1.8,
                             :yminclipnegative => true,
                             :yrange => [],

@@ -27,6 +27,8 @@ plot_stack(
            signallabels = ["VVV", "VVH", "VHH", "HHH"],
            stacksignals = true,
            hideratio = false,
-           showsignalsinratio = true,
-           ratiorange = [0., 2.],
+           showfomfromleft = true,
+           customfom = x->x.s/sqrt(x.s+x.b+x.be^2),
+           ratiotitle = "S/√(S+B+ΔB<sup>2</sup>)<br>scanned from left",
+           ratiotitlesize = 20,
           );
