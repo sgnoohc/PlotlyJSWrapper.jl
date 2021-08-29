@@ -338,12 +338,17 @@ function plot_stack(; backgrounds, signals=Hist1D[], data=Hist1D[], options::Dic
     # Save!
     #
     #
-    # Get output name
-    outputnamewithoutextension = useroptions[:outputname][1:findlast(isequal('.'),useroptions[:outputname])-1]
-
-    # Save HTML
-    savefig(p, "$outputnamewithoutextension.html");
-    savefig(p, "$outputnamewithoutextension.pdf", width=width, height=height);
-    savefig(p, "$outputnamewithoutextension.png", width=width, height=height);
-
+    outputname = useroptions[:outputname]
+    # glob to regex
+    outputname = replace(outputname, r"\{|\,|\}" => s->Dict("{"=>"(","}"=>")",","=>"|")[s])
+    if !isempty(outputname)
+        outputnamenoext = first(rsplit(outputname, "."; limit=2))
+        # all possible output formats
+        outputs = ["$outputnamenoext.$ext" for ext in ["html", "pdf", "png"]]
+        # those matching the specified filename (or pattern)
+        for output in outputs[occursin.(Regex(outputname), outputs)]
+            savefig(p, output, width=width, height=height);
+        end
+    end
+    return p
 end
