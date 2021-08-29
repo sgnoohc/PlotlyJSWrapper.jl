@@ -19,13 +19,40 @@ signal = Hist1D((randn(1000).+10)./3,-5:0.5:5)
 
 # Plotting
 plot_stack(
-           backgrounds=[h1, h2, h3, h4, h5, h6],
-           data=[data],
-           signals=[signal],
-           xaxistitle = "Δϕ<sub>jj</sub> [GeV]",
-           outputname = "plot.pdf",
-           backgroundlabels = ["tt̄", "Higgs", "Drell-Yan", "tt̄Z", "ZZ", "VBS WW"],
-           signallabels = ["VVH"],
-          )
+
+  # Hists are FHist's Hist1D
+
+  # Background histograms
+  backgrounds=[h1, h2, h3,
+               h4, h5, h6],
+
+  # Data histograms
+  data=[data],
+
+  # Signal histograms
+  signals=[signal, signal2,
+           signal3, signal4],
+
+  # Options
+  xaxistitle = "Δϕ<sub>jj</sub> [GeV]",
+  outputname = "plot.pdf",
+  backgroundlabels =
+        ["tt̄",
+         "Higgs",
+         "Drell-Yan",
+         "tt̄Z",
+         "ZZ",
+         "VBS WW"],
+  signallabels =
+        ["VVV",
+         "VVH",
+         "VHH",
+         "HHH"],
+  # Some extra features
+  stacksignals = true,
+  hideratio = false,
+  showsignalsinratio = true,
+
+)
 ```     
 <img src="examples/example1/plot.png" />
