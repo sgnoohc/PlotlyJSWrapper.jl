@@ -38,6 +38,9 @@ function plot_stack(; backgrounds, signals=Hist1D[], data=Hist1D[], options...)
         useroptions[:hideratio] = true
     end
 
+    # Check for conflicting options
+    check_conflicting_options(useroptions)
+
     #__________________________________________________________________________________
     #
     #
@@ -82,11 +85,20 @@ function plot_stack(; backgrounds, signals=Hist1D[], data=Hist1D[], options...)
 
     # Add the content traces
     if !useroptions[:hideratio]
-        if useroptions[:showsignalsinratio]
-            add_ratio_signal_traces!(traces, signals, total, options=useroptions)
+        # Show S / B per bin
+        if useroptions[:showfomperbin]
+            add_fom_traces!(traces, signals, total, data_, options=useroptions, perbin=true)
+        elseif useroptions[:showfomfromleft]
+            add_fom_traces!(traces, signals, total, data_, options=useroptions, perbin=false, fromleft=true)
+        elseif useroptions[:showfomfromright]
+            add_fom_traces!(traces, signals, total, data_, options=useroptions, perbin=false, fromleft=false)
+        else
+            if useroptions[:showsignalsinratio]
+                add_ratio_signal_traces!(traces, signals, total, options=useroptions)
+            end
+            add_ratio_totalerror_traces!(traces, total, options=useroptions)
+            add_ratio_traces!(traces, ratio, options=useroptions)
         end
-        add_ratio_totalerror_traces!(traces, total, options=useroptions)
-        add_ratio_traces!(traces, ratio, options=useroptions)
     end
     add_background_traces!(traces, bkgs, options=useroptions)
     add_signal_traces!(traces, signals, options=useroptions, total=total)
@@ -117,7 +129,7 @@ function plot_stack(; backgrounds, signals=Hist1D[], data=Hist1D[], options...)
     end
 
     # Compute the ratio range
-    ratiorange = useroptions[:ratiorange]
+    ratiorange = length(useroptions[:ratiorange]) == 0 ? [0, 2] : useroptions[:ratiorange]
 
     # Compute the layout
     ratiopanelydomain = [0, 0.27]

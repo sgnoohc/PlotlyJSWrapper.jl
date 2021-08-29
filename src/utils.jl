@@ -1,3 +1,13 @@
+struct BinInfo
+    s::Float64
+    se::Float64
+    b::Float64
+    be::Float64
+    d::Float64
+    de::Float64
+    ibin::Int64
+end
+
 """
     build_hist1dtrace(h; witherror=false, datastyle=false)
 
@@ -119,7 +129,7 @@ function fit_bkg_to_data!(bkgs, data_)
         bkgint = integral(total)
         # If total integral is 0 then throw exception
         if bkgint == 0
-            error("ERROR [PlotlyJSWrapper scale_background!], Asked to rescale background but background integral = 0!")
+            error("[PlotlyJSWrapper scale_background!], Asked to rescale background but background integral = 0!")
             return
         end
         # Compute the data integral
@@ -140,7 +150,15 @@ end
 Get range of ymin to ymax
 """
 function get_yrange(total, signals, data_)
-    hists = [total, signals..., data_...]
+    get_yrange([total, signals..., data_...])
+end
+
+"""
+    get_yrange(hists)
+
+Get range of ymin to ymax
+"""
+function get_yrange(hists)
     ymin = [minimum(bincounts(h)-sqrt.(h.sumw2)) for h in hists] |> minimum
     ymax = [maximum(bincounts(h)+sqrt.(h.sumw2)) for h in hists] |> maximum
     (ymin, ymax)
@@ -307,13 +325,11 @@ function add_ratio_totalerror_traces!(traces, total; options)
 end
 
 """
-    add_ratio_signal_traces!(traces, signals, total; options)
+    add_ratio_customsignal_traces!(traces, customsignals; options)
 
-Add signals traces above ratio panel's unity line to `traces`
+Add customized signals traces for ratio panel to `traces`
 """
-function add_ratio_signal_traces!(traces, signals, total; options)
-    signalsratio = (signals .+ total) ./ total
-    signals_to_use = deepcopy(signalsratio)
+function add_ratio_customsignal_traces!(traces, signals_to_use; options)
     signals_traces = signals_to_use .|> x->build_hist1dtrace(x, witherror=true)[1]
     signals_labels = deepcopy(options[:signallabels])
     if length(signals_labels) < length(signals_traces)
@@ -331,6 +347,72 @@ function add_ratio_signal_traces!(traces, signals, total; options)
         tr.fields[:opacity] = 1
         push!(traces, tr)
     end
+    if length(options[:ratiorange]) == 0
+        options[:ratiorange] = get_yrange(signals_to_use)
+        options[:ratiorange] = [options[:ratiorange][1], 1.2*options[:ratiorange][2]]
+    end
+end
+
+"""
+    add_ratio_signal_traces!(traces, signals, total; options)
+
+Add signals traces above ratio panel's unity line to `traces`
+"""
+function add_ratio_signal_traces!(traces, signals, total; options)
+    signalsratio = (signals .+ total) ./ total
+    signals_to_use = deepcopy(signalsratio)
+    add_ratio_customsignal_traces!(traces, signals_to_use, options=options)
+end
+
+"""
+    add_fom_traces!(traces, signals, total, data; options)
+
+Add fom traces to `traces`
+if `perbin` then return per bin fom
+if `fromleft` starts cutting from left
+"""
+function add_fom_traces!(traces, signals, total, data; options, perbin=true, fromleft=true)
+    # Parse which fom to use
+    fom = if options[:fom] == "soverb"
+        x->x.s/x.b
+    elseif options[:fom] == "soversqrtb"
+        x->x.s/sqrt(x.b)
+    elseif options[:fom] == "soversqrtsplusb"
+        x->x.s/sqrt(x.s+x.b)
+    elseif options[:fom] == "llsignif"
+        x->sqrt(2*((x.s+x.b)*log(1+x.s/x.b)-x.s))
+    elseif options[:fom] == "custom"
+        options[:customfom]
+    end
+    # Copy the signals to use because we will overwrite the content
+    signals_to_use = deepcopy(signals)
+    # Obtain the total # of bins
+    nbs = nbins(total)
+    # Copy the data content if the data is provided
+    dc = if length(data) > 0
+        data[1].hist.weights
+    else
+        repeat([0.0],nbs)
+    end
+    de = if length(data) > 0
+        sqrt.(data[1].sumw2)
+    else
+        repeat([0.0],nbs)
+    end
+    bcs = if perbin
+        signals_to_use .|> s->map(fom, BinInfo.(bincounts(s), sqrt.(s.sumw2), bincounts(total), sqrt.(total.sumw2), dc, de, 1:nbins(s)))
+    elseif fromleft
+        cumtotal = mycumulative(total, forward=false)
+        signals_to_use .|> x->mycumulative(x, forward=false) .|> s->map(fom, BinInfo.(bincounts(s), sqrt.(s.sumw2), cumtotal.hist.weights, sqrt.(cumtotal.sumw2), dc, de, 1:nbins(s)))
+    else
+        cumtotal = mycumulative(total, forward=true)
+        signals_to_use .|> x->mycumulative(x, forward=true) .|> s->map(fom, BinInfo.(bincounts(s), sqrt.(s.sumw2), cumtotal.hist.weights, sqrt.(cumtotal.sumw2), dc, de, 1:nbins(s)))
+    end
+    for (i, bc) in enumerate(bcs)
+        signals_to_use[i].hist.weights = bc
+        signals_to_use[i].sumw2 .= 0 # remove errors as they don't have a meaning
+    end
+    add_ratio_customsignal_traces!(traces, signals_to_use, options=options)
 end
 
 """
@@ -461,4 +543,46 @@ function add_signal_traces!(traces, signals; options, total)
             push!(traces, tr)
         end
     end
+end
+
+"""
+    check_conflicting_options(options)
+
+Check conflicting options for few options and give warnings to users.
+"""
+function check_conflicting_options(options)
+    # Check that the options are consistent between fom settings
+    val = Int64(options[:showfomperbin]) +
+          Int64(options[:showfomfromleft]) +
+          Int64(options[:showfomfromright]) +
+          Int64(options[:showsignalsinratio])
+    if val > 1
+        @warn "[PlotlyJSWrapper] Provided more than one showfomperbin, showfomfromleft, showfomfromright, showsignalsinratio!"
+        @warn "[PlotlyJSWrapper] Will choose whichever comes first in the above order!"
+    end
+    # Check that the fom options are allowed
+    if typeof(options[:fom]) == String
+
+        if options[:fom] ∉ ["soverb", "soversqrtb", "soversqrtsplusb", "llsignif", "custom"]
+            @warn string("[PlotlyJSWrapper] Provided :fom=",options[:fom]," which is not recognized!")
+            @warn "[PlotlyJSWrapper] Defaulting to :fom=\"soversqrtb\""
+        end
+    end
+    if options[:fom] == "custom" && isnothing(options[:customfom])
+        error("[PlotlyJSWrapper] Provided :fom=\"custom\" yet you have not provided an anonymous function (i.e. lambda) to :customfom option! Please provide a lambda e.g. (s,serror,b,berror,data,dataerror,binindex)->s/sqrt(s+berror^2) to :customfom.")
+    end
+end
+
+"""
+    mycumulative(h::Hist1D; forward=true)
+Create a cumulative histogram. If `forward`, start
+summing from the left.
+"""
+function mycumulative(h::Hist1D; forward=true)
+    # https://root.cern.ch/doc/master/TH1_8cxx_source.html#l02608
+    f = forward ? identity : reverse
+    h = deepcopy(h)
+    h.hist.weights .= f(cumsum(f(h.hist.weights)))
+    h.sumw2 .= f(cumsum(f(h.sumw2)))
+    return h
 end
