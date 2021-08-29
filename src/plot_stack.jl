@@ -35,6 +35,11 @@ function plot_stack(; backgrounds, signals=Hist1D[], data=Hist1D[], options::Dic
     # Take the default options and merge it with given options
     useroptions = merge(default_options, options)
 
+    # if no data and not special ratio panel style provided set it hideratio = true
+    if length(data) == 0
+        useroptions[:hideratio] = true
+    end
+
     #__________________________________________________________________________________
     #
     #
@@ -72,13 +77,17 @@ function plot_stack(; backgrounds, signals=Hist1D[], data=Hist1D[], options::Dic
     traces = GenericTrace{Dict{Symbol, Any}}[]
 
     # Add the dummy axes traces
-    if !options[:hideratio]
+    if !useroptions[:hideratio]
         add_ratio_axes_traces!(traces, options=useroptions)
     end
     add_main_axes_traces!(traces, options=useroptions)
 
     # Add the content traces
-    if !options[:hideratio]
+    if !useroptions[:hideratio]
+        if useroptions[:showsignalsinratio]
+            add_ratio_signal_traces!(traces, signals, total, options=useroptions)
+        end
+        add_ratio_totalerror_traces!(traces, total, options=useroptions)
         add_ratio_traces!(traces, ratio, options=useroptions)
     end
     add_background_traces!(traces, bkgs, options=useroptions)
@@ -134,7 +143,7 @@ function plot_stack(; backgrounds, signals=Hist1D[], data=Hist1D[], options::Dic
     mainpanel_xaxistitle = ""
     
     # Recompute the heights and domains if it :hideratio is true
-    if options[:hideratio]
+    if useroptions[:hideratio]
         ratiopanelydomain = [0, 0]
         mainpanelydomain = [0, 1]
         height = 460
