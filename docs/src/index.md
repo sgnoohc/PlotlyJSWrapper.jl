@@ -51,6 +51,50 @@ Click the home button on the top right corner to reset the view.
 
 The above plot was created with this julia script [`example1.jl`](https://github.com/sgnoohc/PlotlyJSWrapper.jl/blob/main/examples/example1/example1.jl).
 
+Below is another example from this julia script [`example3.jl`](https://github.com/sgnoohc/PlotlyJSWrapper.jl/blob/main/examples/example3/example3.jl).
+
+```@raw html
+<div style="text-align:left">
+<iframe id="github-iframe3" src="" width="520" height="620" frameBorder="0" style="position: absolute; height: 100%; "></iframe>
+<script>
+    fetch('https://api.github.com/repos/sgnoohc/PlotlyJSWrapper.jl/contents/examples/example3/plot.html')
+        .then(function(response) {
+            return response.json();
+        }).then(function(data) {
+            var iframe = document.getElementById('github-iframe3');
+            iframe.src = 'data:text/html;base64;charset=utf-8,' + encodeURIComponent(data['content']);
+        });
+</script>
+</div>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+```
+
 See [Plotting HEP style Data / MC Stack Plot](@ref) for more information.
 
 ## More Examples
