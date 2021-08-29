@@ -28,3 +28,4 @@ plot_stack(
            signallabels = ["VVH"],
           )
 ```     
+<img src="examples/example1/plot.png" />
