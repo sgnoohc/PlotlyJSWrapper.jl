@@ -22,10 +22,10 @@ plot_stack(
            data=[data],
            signals=[signal, signal2, signal3, signal4],
            xaxistitle = "Δϕ<sub>jj</sub> [GeV]",
-           outputname = "plot.pdf",
+           outputname = "plot.{pdf,png,html}",
            backgroundlabels = ["tt̄", "Higgs", "Drell-Yan", "tt̄Z", "ZZ", "VBS WW"],
            signallabels = ["VVV", "VVH", "VHH", "HHH"],
            stacksignals = true,
            hideratio = false,
            showsignalsinratio = true,
-          )
+          );
