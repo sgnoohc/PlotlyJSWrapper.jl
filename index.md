@@ -1,4 +1,4 @@
-# Plotly wrapper for HEP in Julia
+# PlotlyJS Wrapper for HEP in Julia
 
 [![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://sgnoohc.github.io/PlotlyJSWrapper.jl/dev/)
 
