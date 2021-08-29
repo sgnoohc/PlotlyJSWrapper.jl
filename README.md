@@ -30,3 +30,4 @@ plot_stack(
            )
           )
 ```     
+<img src="examples/example1/plot.png" />
