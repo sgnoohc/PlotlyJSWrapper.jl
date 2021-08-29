@@ -34,7 +34,7 @@ Default options of all the togglable options are documented here.
     :signalcolors => repeat([8001, 8002, 8003, 8004],10)
     :stackedsignalopacity => 0.6 # Set the opacity of stacked signal fill
 
-Color indexs are defined in [src/colors.jl](@ref).
+Color indexs are defined in [https://github.com/sgnoohc/PlotlyJSWrapper.jl/blob/main/src/colors.jl](@ref).
 
 # LHC Experiment related labels
 
