@@ -2,6 +2,7 @@ module PlotlyJSWrapper
 
 using PlotlyJS
 using FHist
+using StatsBase
 
 export plot_stack
 

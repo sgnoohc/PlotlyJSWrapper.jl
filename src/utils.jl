@@ -406,13 +406,13 @@ if `fromleft` starts cutting from left
 function add_fom_traces!(traces, signals, total, data; options, perbin=true, fromleft=true)
     # Parse which fom to use
     fom = if options[:fom] == "soverb"
-        x->x.s/x.b
+        x->(x.b != 0 ? x.s/x.b : 0)
     elseif options[:fom] == "soversqrtb"
-        x->x.s/sqrt(x.b)
+        x->(x.b != 0 ? x.s/sqrt(x.b) : 0)
     elseif options[:fom] == "soversqrtsplusb"
-        x->x.s/sqrt(x.s+x.b)
+        x->((x.s+x.b) != 0 ? x.s/sqrt(x.s+x.b) : 0)
     elseif options[:fom] == "llsignif"
-        x->sqrt(2*((x.s+x.b)*log(1+x.s/x.b)-x.s))
+        x->(((x.s/x.b) != -1 && (2*((x.s+x.b)*log(1+x.s/x.b)-x.s)) >= 0) ? sqrt(2*((x.s+x.b)*log(1+x.s/x.b)-x.s)) : 0)
     elseif options[:fom] == "custom"
         options[:customfom]
     end
@@ -440,11 +440,15 @@ function add_fom_traces!(traces, signals, total, data; options, perbin=true, fro
         cumtotal = mycumulative(total, forward=true)
         signals_to_use .|> x->mycumulative(x, forward=true) .|> s->map(fom, BinInfo.(bincounts(s), sqrt.(s.sumw2), cumtotal.hist.weights, sqrt.(cumtotal.sumw2), dc, de, 1:nbins(s)))
     end
+    be = binedges(total)
+    new_signals_to_use = []
     for (i, bc) in enumerate(bcs)
-        signals_to_use[i].hist.weights = bc
-        signals_to_use[i].sumw2 .= 0 # remove errors as they don't have a meaning
+        # signals_to_use[i].hist.weights .= bc
+        # signals_to_use[i].hist = Histogram(be, bc)
+        # signals_to_use[i].sumw2 .= 0 # remove errors as they don't have a meaning
+        push!(new_signals_to_use, Hist1D(Histogram(be, bc), repeat([0.0], length(bc))))
     end
-    add_ratio_customsignal_traces!(traces, signals_to_use, options=options)
+    add_ratio_customsignal_traces!(traces, new_signals_to_use, options=options)
 end
 
 """
@@ -654,4 +658,19 @@ function get_data_with_pearson_err(data_; options)
     end
     errorsminus = data_ .|> bincounts .|> x->(x .|> y->errfunc(y)[2])
     (data, errorsminus)
+end
+
+"""
+    isdrawratio(; options)
+    isdrawratio(; backgrounds, signals=Hist1D[], data=Hist1D[], options...)
+
+Determine based on arguments provided whether to draw ratio
+"""
+function isdrawratio(backgrounds, signals, data, options)
+    length(data) != 0 && return true
+    options[:showsignalsinratio] && return true
+    options[:showfomperbin] && return true
+    options[:showfomfromleft] && return true
+    options[:showfomfromright] && return true
+    return false
 end

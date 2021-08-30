@@ -34,7 +34,7 @@ function plot_stack(; backgrounds, signals=Hist1D[], data=Hist1D[], options...)
     useroptions = merge(default_options, options)
 
     # if no data and not special ratio panel style provided set it hideratio = true
-    if length(data) == 0
+    if !isdrawratio(backgrounds, signals, data, useroptions)
         useroptions[:hideratio] = true
     end
 
