@@ -57,6 +57,12 @@ Color indexs are defined in [https://github.com/sgnoohc/PlotlyJSWrapper.jl/blob/
     :hideratio => false # Hide the ratio panel below
     :poissonerror => false # Make the data error poisson
 
+    # To provide a custom poisson error treatment lambda
+    # Must be of the form where a count `x` is provided and mapped to `[upper, lower]` error
+    # e.g.  x -> [sqrt(x+0.25)+0.5, sqrt(x+0.25)-0.5]
+    # default option is set to `nothing` and when not provided the above lambda will be used
+    :poissonerrorfunc => nothing
+
 # Significance (or other figure of merit) scans
 
     # Define the "figure of merit"
@@ -118,10 +124,11 @@ const default_options = Dict(
                             :stacksignals => false,
                             :showsignalsinratio => false,
                             :hideratio => false,
-                            :fom => "soversqrtb", 
+                            :fom => "soversqrtb",
                             :customfom => nothing,
                             :showfomperbin => false,
                             :showfomfromleft => false,
                             :showfomfromright => false,
                             :poissonerror => false,
+                            :poissonerrorfunc => nothing,
                             )
