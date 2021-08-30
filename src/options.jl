@@ -42,6 +42,7 @@ Color indexs are defined in [https://github.com/sgnoohc/PlotlyJSWrapper.jl/blob/
 
     # Currently only "CMS" label implemented
     :addpreliminarylabel => true
+    :showbeaminfo => true # Show lumi and energy
     :lumivalue => 137
     :comenergy => 13
 
@@ -113,6 +114,7 @@ const default_options = Dict(
                             :xaxistitle => "variable [unit]",
                             :yaxistitle => "Events",
                             :addpreliminarylabel => true,
+                            :showbeaminfo => true,
                             :lumivalue => 137,
                             :comenergy => 13,
                             :datacolors => ["black", "red", "blue", "orange", "green", "purple", "gray"],

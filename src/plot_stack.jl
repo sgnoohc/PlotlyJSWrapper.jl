@@ -138,7 +138,9 @@ function plot_stack(; backgrounds, signals=Hist1D[], data=Hist1D[], options...)
     # Compute the texts to put on the plot
     annotations = []
     add_cms_label!(annotations, options=useroptions)
-    add_lumi_label!(annotations, options=useroptions)
+    if useroptions[:showbeaminfo]
+        add_lumi_label!(annotations, options=useroptions)
+    end
 
     # Compute the plot size
     width = 500
