@@ -20,13 +20,22 @@ are the up and down uncertainty bands.
 If all extra arguments are false, it returns a single bar histogram.
 (i.e. background style)
 """
-function build_hist1dtrace(h; witherror=false, datastyle=false)
-    bin_low_edges = copy(binedges(h)) # bin edges
-    bin_centers = copy(bincenters(h)) # bin edges
-    bin_contents = copy(bincounts(h))
+function build_hist1dtrace(h; witherror=false, datastyle=false, errorsminus=[])
+    bin_low_edges = deepcopy(binedges(h)) # bin edges
+    bin_centers = deepcopy(bincenters(h)) # bin edges
+    bin_contents = deepcopy(bincounts(h))
+    errorsminus_ = deepcopy(errorsminus)
+    if length(errorsminus_) != 0 && length(errorsminus_) != length(bin_contents)
+        println(length(errorsminus_))
+        println(length(bin_contents))
+        error("[PlotlyJSWrapper] length of errorsminus does not match the histogram nbins!")
+    end
     push!(bin_contents, last(bin_contents))
     bin_errors = sqrt.(h.sumw2)
     push!(bin_errors, last(bin_errors))
+    if length(errorsminus_) != 0
+        push!(errorsminus_, last(errorsminus_))
+    end
     traces = GenericTrace{Dict{Symbol, Any}}[]
     if datastyle
         new_bin_contents = Float64[]
@@ -39,9 +48,18 @@ function build_hist1dtrace(h; witherror=false, datastyle=false)
                 push!(new_bin_errors, ye)
             end
         end
+        error_y = if length(errorsminus_) != 0
+            new_bin_errors_up = new_bin_errors
+            new_bin_errors_dn = errorsminus_
+            attr(array=new_bin_errors_up, arrayminus=new_bin_errors_dn, symmetric=false, width=0)
+        else
+            attr(array=new_bin_errors, width=0)
+        end
+
+        attr(array=new_bin_errors, width=0)
         s1 = scatter(y=new_bin_contents,
                      x=new_bin_centers,
-                     error_y=attr(array=new_bin_errors, width=0),
+                     error_y=error_y,
                      opacity=1,
                      mode="markers",
                      marker_size=7,
@@ -279,17 +297,31 @@ function add_lumi_label!(annotations; options)
 end
 
 """
-    add_ratio_traces!(traces, ratio; options)
+    add_ratio_traces!(traces, data, total; options)
 
 Add data / MC ratio traces to `traces`
 """
-function add_ratio_traces!(traces, ratio; options)
+function add_ratio_traces!(traces, data, total; options)
+    data_ = deepcopy(data) # Copy to not modify original
+    # Get the asymm error if requested
+    errorsminus = if options[:poissonerror]
+        d = get_data_with_pearson_err(data_)
+        data_ = d[1]
+        d[2] .|> x->x./bincounts(total)
+    else
+        []
+    end
+    ratio = data_ ./ total
     # If no ratio plot then nothing to do just move on
     if length(ratio) == 0
         return
     end
     # Ratio trace
-    ratio_traces = ratio .|> x->build_hist1dtrace(x, datastyle=true)
+    ratio_traces = if options[:poissonerror]
+        map((x,y)->build_hist1dtrace(x, datastyle=true, errorsminus=y), ratio, errorsminus)
+    else
+        ratio .|> x->build_hist1dtrace(x, datastyle=true)
+    end
     if length(ratio_traces) > length(options[:datacolors])
         println("Warning! There are more data histograms than provided :datacolors!")
     end
@@ -477,7 +509,21 @@ end
 Add data traces to `traces`
 """
 function add_data_traces!(traces, data; options)
-    data_traces = data .|> x->build_hist1dtrace(x, datastyle=true)
+    data_ = deepcopy(data) # Copy to not modify original
+    # Get the asymm error if requested
+    errorsminus = if options[:poissonerror]
+        d = get_data_with_pearson_err(data_)
+        data_ = d[1]
+        d[2]
+    else
+        []
+    end
+    # Gather the traces for plotly to plot
+    data_traces = if options[:poissonerror]
+        map((x,y)->build_hist1dtrace(x, datastyle=true, errorsminus=y), data_, errorsminus)
+    else
+        data_ .|> x->build_hist1dtrace(x, datastyle=true)
+    end
     data_labels = deepcopy(options[:datalabels])
     if length(data_labels) < length(data_traces)
         for i in 1:(length(data_traces)-length(data_labels))
@@ -586,4 +632,25 @@ function mycumulative(h::Hist1D; forward=true)
     h.hist.weights .= f(cumsum(f(h.hist.weights)))
     h.sumw2 .= f(cumsum(f(h.sumw2)))
     return h
+end
+
+@inline function pearson_err(n::Real)
+    s = sqrt(n+0.25)
+    s+0.5, s-0.5
+end
+
+"""
+    get_data_with_pearson_err(data_)
+
+Return data::Hist1D[], errorsminus::Float64[] where `data` has sumw2 set to
+positive error, and `errorsminus` are list of negative errors in vector
+"""
+function get_data_with_pearson_err(data_)
+    data = deepcopy(data_)
+    sumw2s = data .|> bincounts .|> x->(x .|> y->pearson_err(y)[1]) .|> x->x^2
+    for (d, w2) in zip(data, sumw2s)
+        d.sumw2 .= w2
+    end
+    errorsminus = data_ .|> bincounts .|> x->(x .|> y->pearson_err(y)[2])
+    (data, errorsminus)
 end
