@@ -305,7 +305,7 @@ function add_ratio_traces!(traces, data, total; options)
     data_ = deepcopy(data) # Copy to not modify original
     # Get the asymm error if requested
     errorsminus = if options[:poissonerror]
-        d = get_data_with_pearson_err(data_)
+        d = get_data_with_pearson_err(data_; options=options)
         data_ = d[1]
         d[2] .|> x->x./bincounts(total)
     else
@@ -512,7 +512,7 @@ function add_data_traces!(traces, data; options)
     data_ = deepcopy(data) # Copy to not modify original
     # Get the asymm error if requested
     errorsminus = if options[:poissonerror]
-        d = get_data_with_pearson_err(data_)
+        d = get_data_with_pearson_err(data_; options=options)
         data_ = d[1]
         d[2]
     else
@@ -640,17 +640,18 @@ end
 end
 
 """
-    get_data_with_pearson_err(data_)
+    get_data_with_pearson_err(data_; options)
 
 Return data::Hist1D[], errorsminus::Float64[] where `data` has sumw2 set to
 positive error, and `errorsminus` are list of negative errors in vector
 """
-function get_data_with_pearson_err(data_)
+function get_data_with_pearson_err(data_; options)
     data = deepcopy(data_)
-    sumw2s = data .|> bincounts .|> x->(x .|> y->pearson_err(y)[1]) .|> x->x^2
+    errfunc = isnothing(options[:poissonerrorfunc]) ? pearson_err : options[:poissonerrorfunc]
+    sumw2s = data .|> bincounts .|> x->(x .|> y->errfunc(y)[1]) .|> x->x^2
     for (d, w2) in zip(data, sumw2s)
         d.sumw2 .= w2
     end
-    errorsminus = data_ .|> bincounts .|> x->(x .|> y->pearson_err(y)[2])
+    errorsminus = data_ .|> bincounts .|> x->(x .|> y->errfunc(y)[2])
     (data, errorsminus)
 end
