@@ -41,7 +41,8 @@ Color indexs are defined in [https://github.com/sgnoohc/PlotlyJSWrapper.jl/blob/
 # LHC Experiment related labels
 
     # Currently only "CMS" label implemented
-    :addpreliminarylabel => true
+    :addcmsextralabel => true # To add extra label
+    :cmsextralabeltext => "Preliminary" # Label to be added next to "CMS"
     :showbeaminfo => true # Show lumi and energy
     :lumivalue => 137
     :comenergy => 13
@@ -113,7 +114,8 @@ const default_options = Dict(
                             :ratiorange => [],
                             :xaxistitle => "variable [unit]",
                             :yaxistitle => "Events",
-                            :addpreliminarylabel => true,
+                            :addcmsextralabel => true,
+                            :cmsextralabeltext => "Preliminary",
                             :showbeaminfo => true,
                             :lumivalue => 137,
                             :comenergy => 13,

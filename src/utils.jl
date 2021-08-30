@@ -254,7 +254,8 @@ function add_cms_label!(annotations; options)
                                      ),
                             showarrow=false,
                            ))
-    if options[:addpreliminarylabel]
+    if options[:addcmsextralabel]
+        label = options[:cmsextralabeltext]
         push!(annotations, attr(
                                 xref="paper",
                                 yref="paper",
@@ -262,7 +263,7 @@ function add_cms_label!(annotations; options)
                                 yanchor="bottom",
                                 x=0.18,
                                 y=1.0,
-                                text="<i>Preliminary</i>",
+                                text="<i>$label</i>",
                                 font=attr(
                                           color="black",
                                           size=20,
