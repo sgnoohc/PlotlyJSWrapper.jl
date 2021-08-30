@@ -55,6 +55,7 @@ Color indexs are defined in [https://github.com/sgnoohc/PlotlyJSWrapper.jl/blob/
     :stacksignals => false # Stacks signals on top of total background
     :showsignalsinratio => false # Show signals above unity line in ratio panel
     :hideratio => false # Hide the ratio panel below
+    :poissonerror => false # Make the data error poisson
 
 # Significance (or other figure of merit) scans
 
@@ -122,4 +123,5 @@ const default_options = Dict(
                             :showfomperbin => false,
                             :showfomfromleft => false,
                             :showfomfromright => false,
+                            :poissonerror => false,
                             )

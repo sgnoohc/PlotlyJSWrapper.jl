@@ -65,9 +65,6 @@ function plot_stack(; backgrounds, signals=Hist1D[], data=Hist1D[], options...)
     # Total background histogram
     total = sum(bkgs)
 
-    # Compute the ratio histogram
-    ratio = data_ ./ total
-
     #__________________________________________________________________________________
     #
     #
@@ -97,7 +94,7 @@ function plot_stack(; backgrounds, signals=Hist1D[], data=Hist1D[], options...)
                 add_ratio_signal_traces!(traces, signals, total, options=useroptions)
             end
             add_ratio_totalerror_traces!(traces, total, options=useroptions)
-            add_ratio_traces!(traces, ratio, options=useroptions)
+            add_ratio_traces!(traces, data_, total, options=useroptions)
         end
     end
     add_background_traces!(traces, bkgs, options=useroptions)
