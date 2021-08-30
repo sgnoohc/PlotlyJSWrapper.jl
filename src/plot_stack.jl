@@ -98,8 +98,10 @@ function plot_stack(; backgrounds, signals=Hist1D[], data=Hist1D[], options...)
         end
     end
     add_background_traces!(traces, bkgs, options=useroptions)
+    if useroptions[:showtotal]
+        add_total_traces!(traces, total, options=useroptions)
+    end
     add_signal_traces!(traces, signals, options=useroptions, total=total)
-    add_total_traces!(traces, total, options=useroptions)
     add_data_traces!(traces, data_, options=useroptions)
 
     #__________________________________________________________________________________

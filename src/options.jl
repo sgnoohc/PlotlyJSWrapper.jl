@@ -56,6 +56,8 @@ Color indexs are defined in [https://github.com/sgnoohc/PlotlyJSWrapper.jl/blob/
     :showsignalsinratio => false # Show signals above unity line in ratio panel
     :hideratio => false # Hide the ratio panel below
     :poissonerror => false # Make the data error poisson
+    :showtotal => true # Show total background line
+    :showtotallegend => true # Show total background line legend item
 
     # To provide a custom poisson error treatment lambda
     # Must be of the form where a count `x` is provided and mapped to `[upper, lower]` error
@@ -131,4 +133,6 @@ const default_options = Dict(
                             :showfomfromright => false,
                             :poissonerror => false,
                             :poissonerrorfunc => nothing,
+                            :showtotal => true,
+                            :showtotallegend => false,
                             )

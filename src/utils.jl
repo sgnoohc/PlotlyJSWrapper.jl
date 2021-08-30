@@ -127,7 +127,7 @@ ratio panel for bkg error shade in the ratio panel
 """
 function get_totalunity(total)
     output = total / total
-    output.hist.weights .= output.hist.weights .|> x->(isnan(x) ? 0 : x)
+    output.hist.weights .= output.hist.weights .|> x->(isnan(x) ? 1 : x)
     output.sumw2 .= output.sumw2 .|> x->(isnan(x) ? 0 : x)
     return output
 end
@@ -498,7 +498,7 @@ function add_total_traces!(traces, total; options)
     append!(traces, totaltraces)
     # dummy total histogram for legend
     totallegendtrace = copy(totaltraces[1])
-    totallegendtrace.fields[:showlegend] = true
+    totallegendtrace.fields[:showlegend] = options[:showtotallegend]
     totallegendtrace.fields[:legendgroup] = -100
     push!(traces, totallegendtrace)
 end
