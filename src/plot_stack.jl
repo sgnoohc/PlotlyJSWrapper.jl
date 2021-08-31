@@ -119,6 +119,11 @@ function plot_stack(; backgrounds, signals=Hist1D[], data=Hist1D[], options...)
     else
         [ymin_range, ymax_range]
     end
+    mainyaxistype = if useroptions[:ylog]
+        "log"
+    else
+        "linear"
+    end
 
     # Compute the xrange
     xrange = if length(useroptions[:xrange]) > 1
@@ -289,6 +294,7 @@ function plot_stack(; backgrounds, signals=Hist1D[], data=Hist1D[], options...)
                                 anchor="x4",
                                 title=attr(text=string("&nbsp;"^25,useroptions[:yaxistitle]),
                                            standoff=1),
+                                type=mainyaxistype,
                                ),
                     xaxis4=attr(color="black",
                                 domain=xdomain,

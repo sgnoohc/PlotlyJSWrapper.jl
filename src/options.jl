@@ -22,6 +22,7 @@ Default options of all the togglable options are documented here.
     :ratiorange => [0, 2]
     :yminclipnegative => true, # Clip minimum at 0
     :ymaxscale => 1.8 # Multiplicative factor to ymax points across all histograms
+    :ylog => false
 
 # Legend labels
 
@@ -108,6 +109,7 @@ const default_options = Dict(
                             :ratiotitle => "Data/MC",
                             :ratiotitlesize => 29,
                             :ymaxscale => 1.8,
+                            :ylog => false,
                             :yminclipnegative => true,
                             :yrange => [],
                             :xrange => [],
