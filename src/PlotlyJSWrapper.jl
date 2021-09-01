@@ -4,7 +4,7 @@ using PlotlyJS
 using FHist
 using StatsBase
 
-export plot_stack
+export plot_stack, @bins_str
 
 include("plot_stack.jl")
 include("options.jl")

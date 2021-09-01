@@ -8,6 +8,11 @@ struct BinInfo
     ibin::Int64
 end
 
+macro bins_str(s)
+    nbins, start, stop = split(s, ",")
+    range(parse(Float64,"$start"), parse(Float64,stop), length=parse(Int,nbins)+1)
+end
+
 """
     build_hist1dtrace(h; witherror=false, datastyle=false)
 
